@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: simple-blog
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
 
 logging:
   config: classpath:logback-spring.xml
