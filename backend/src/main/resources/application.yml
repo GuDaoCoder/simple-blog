@@ -1,2 +1,9 @@
 server:
   port: 8173
+
+spring:
+  application:
+    name: simple-blog
+
+logging:
+  config: classpath:logback-spring.xml
