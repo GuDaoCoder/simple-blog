@@ -102,3 +102,7 @@ security:
   # 白名单
   white-urls:
     - /admin/login
+
+# 雪花算法配置
+snowflake:
+  worker-id: 1
