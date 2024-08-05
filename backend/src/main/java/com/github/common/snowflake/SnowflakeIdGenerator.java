@@ -17,7 +17,7 @@ public class SnowflakeIdGenerator implements IdentifierGenerator {
 	@Serial
 	private static final long serialVersionUID = -1501401727192200383L;
 
-	@Value("${snowflake.workerId}")
+	@Value("${snowflake.worker-id}")
 	private long workId;
 
 	private final SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(workId);
