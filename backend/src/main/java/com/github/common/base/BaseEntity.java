@@ -51,10 +51,10 @@ public abstract class BaseEntity implements Serializable {
 			updateTime = LocalDateTime.now();
 		}
 		if (createBy == null) {
-			createBy = UserDetailContext.get().getUserId();
+			createBy = UserDetailContext.getUserId();
 		}
 		if (updateBy == null) {
-			updateBy = UserDetailContext.get().getUserId();
+			updateBy = UserDetailContext.getUserId();
 		}
 	}
 
@@ -64,7 +64,7 @@ public abstract class BaseEntity implements Serializable {
 			updateTime = LocalDateTime.now();
 		}
 		if (updateBy == null) {
-			updateBy = UserDetailContext.get().getUserId();
+			updateBy = UserDetailContext.getUserId();
 		}
 	}
 
