@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(CommonConstants.REQUEST_PREFIX_ADMIN)
 @RequiredArgsConstructor
-public class AdminAuthController {
+public class AuthController {
 
 	private final AdministratorAuthService administratorAuthService;
 
