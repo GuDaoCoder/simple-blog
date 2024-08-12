@@ -18,7 +18,7 @@ import java.io.Serial;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_TAG")
+@Table(name = "T_TAG", uniqueConstraints = @UniqueConstraint(columnNames = "tagName"))
 public class TagEntity extends BaseEntity {
 
 	@Serial
@@ -35,11 +35,13 @@ public class TagEntity extends BaseEntity {
 	/**
 	 * 标签名称
 	 */
+	@Column(length = 64)
 	private String tagName;
 
 	/**
 	 * 颜色
 	 */
+	@Column(length = 20)
 	private String color;
 
 }

@@ -1,9 +1,7 @@
 package com.github.biz.model.entity;
 
 import com.github.common.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +14,7 @@ import java.io.Serial;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_CATEGORY")
+@Table(name = "T_CATEGORY",uniqueConstraints = @UniqueConstraint(columnNames = {"categoryName","level"}))
 public class CategoryEntity extends BaseEntity {
 
 	@Serial
@@ -31,6 +29,7 @@ public class CategoryEntity extends BaseEntity {
 	/**
 	 * 分类名称
 	 */
+	@Column(length = 64)
 	private String categoryName;
 
 	/**
@@ -41,6 +40,7 @@ public class CategoryEntity extends BaseEntity {
 	/**
 	 * 全路径Id
 	 */
+	@Column(length = 256)
 	private String fullId;
 
 	/**

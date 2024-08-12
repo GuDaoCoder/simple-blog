@@ -3,9 +3,7 @@ package com.github.biz.model.entity;
 import com.github.biz.enums.PostSource;
 import com.github.biz.enums.PostStatus;
 import com.github.common.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_ARTICLE")
+@Table(name = "T_ARTICLE",uniqueConstraints = @UniqueConstraint(columnNames = {"title"}))
 public class ArticleEntity extends BaseEntity {
 
 	@Serial
@@ -34,26 +32,33 @@ public class ArticleEntity extends BaseEntity {
 	/**
 	 * 标题
 	 */
+	@Column(length = 64)
 	private String title;
 
 	/**
 	 * 摘要
 	 */
+	@Column(length = 256)
 	private String summary;
 
 	/**
 	 * 封面图片链接
 	 */
+	@Column(length = 256)
 	private String coverPictureUrl;
 
 	/**
 	 * 状态
 	 */
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
 	private PostStatus status;
 
 	/**
 	 * 文章来源
 	 */
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
 	private PostSource source;
 
 	/**

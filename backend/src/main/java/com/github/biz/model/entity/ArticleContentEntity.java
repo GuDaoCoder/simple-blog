@@ -3,6 +3,7 @@ package com.github.biz.model.entity;
 import com.github.common.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +36,7 @@ public class ArticleContentEntity extends BaseEntity {
 	/**
 	 * 文章内容
 	 */
+	@Lob
 	private String content;
 
 }
