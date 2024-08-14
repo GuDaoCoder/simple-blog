@@ -35,13 +35,13 @@ public class TagEntity extends BaseEntity {
 	/**
 	 * 标签名称
 	 */
-	@Column(length = 64)
+	@Column(length = 64, nullable = false)
 	private String tagName;
 
 	/**
 	 * 颜色
 	 */
-	@Column(length = 20)
+	@Column(length = 20, nullable = false)
 	private String color;
 
 }

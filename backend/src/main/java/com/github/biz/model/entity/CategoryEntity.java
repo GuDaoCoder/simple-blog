@@ -14,7 +14,7 @@ import java.io.Serial;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_CATEGORY",uniqueConstraints = @UniqueConstraint(columnNames = {"categoryName","level"}))
+@Table(name = "T_CATEGORY", uniqueConstraints = @UniqueConstraint(columnNames = { "categoryName", "level" }))
 public class CategoryEntity extends BaseEntity {
 
 	@Serial
@@ -29,28 +29,31 @@ public class CategoryEntity extends BaseEntity {
 	/**
 	 * 分类名称
 	 */
-	@Column(length = 64)
+	@Column(length = 64, nullable = false)
 	private String categoryName;
 
 	/**
 	 * 上级分类
 	 */
+	@Column(nullable = false)
 	private Long parentCategoryId;
 
 	/**
 	 * 全路径Id
 	 */
-	@Column(length = 256)
+	@Column(length = 256, nullable = false)
 	private String fullId;
 
 	/**
 	 * 顺序
 	 */
+	@Column(nullable = false)
 	private Integer orderNo;
 
 	/**
 	 * 级别
 	 */
+	@Column(nullable = false)
 	private Integer level;
 
 }

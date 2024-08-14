@@ -1,10 +1,7 @@
 package com.github.biz.model.entity;
 
 import com.github.common.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +19,7 @@ public class ArticleContentEntity extends BaseEntity {
 
 	@Serial
 	private static final long serialVersionUID = 6459600440491801060L;
+
 	/**
 	 * 主键Id
 	 */
@@ -31,6 +29,7 @@ public class ArticleContentEntity extends BaseEntity {
 	/**
 	 * 文章Id
 	 */
+	@Column(nullable = false)
 	private Long postId;
 
 	/**

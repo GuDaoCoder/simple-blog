@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_ARTICLE",uniqueConstraints = @UniqueConstraint(columnNames = {"title"}))
+@Table(name = "T_ARTICLE", uniqueConstraints = @UniqueConstraint(columnNames = { "title" }))
 public class ArticleEntity extends BaseEntity {
 
 	@Serial
@@ -32,7 +32,7 @@ public class ArticleEntity extends BaseEntity {
 	/**
 	 * 标题
 	 */
-	@Column(length = 64)
+	@Column(length = 64, nullable = false)
 	private String title;
 
 	/**
@@ -51,29 +51,32 @@ public class ArticleEntity extends BaseEntity {
 	 * 状态
 	 */
 	@Enumerated(EnumType.STRING)
-	@Column(length = 20)
+	@Column(length = 20, nullable = false)
 	private PostStatus status;
 
 	/**
 	 * 文章来源
 	 */
 	@Enumerated(EnumType.STRING)
-	@Column(length = 20)
+	@Column(length = 20, nullable = false)
 	private PostSource source;
 
 	/**
 	 * 所属分类Id
 	 */
+	@Column(nullable = false)
 	private Long categoryId;
 
 	/**
 	 * 是否置顶
 	 */
+	@Column(nullable = false)
 	private Boolean top;
 
 	/**
 	 * 是否开启评论
 	 */
+	@Column(nullable = false)
 	private Boolean enableComment;
 
 	/**

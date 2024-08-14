@@ -1,6 +1,7 @@
 package com.github.common.base;
 
 import com.github.common.context.UserDetailContext;
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -25,21 +26,25 @@ public abstract class BaseEntity implements Serializable {
 	/**
 	 * 创建用户Id
 	 */
+	@Column(nullable = false)
 	private Long createBy;
 
 	/**
 	 * 创建时间
 	 */
+	@Column(nullable = false)
 	private LocalDateTime createTime;
 
 	/**
 	 * 更新用户Id
 	 */
+	@Column(nullable = false)
 	private Long updateBy;
 
 	/**
 	 * 更新时间
 	 */
+	@Column(nullable = false)
 	private LocalDateTime updateTime;
 
 	@PrePersist

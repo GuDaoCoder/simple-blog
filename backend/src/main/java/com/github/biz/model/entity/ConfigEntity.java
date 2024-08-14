@@ -27,13 +27,13 @@ public class ConfigEntity extends BaseEntity {
 	 * key
 	 */
 	@Id
-	@Column(length = 128)
+	@Column(length = 128, nullable = false)
 	private String configKey;
 
 	/**
 	 * value
 	 */
-	@Column(length = 512)
+	@Column(length = 512, nullable = false)
 	private String configValue;
 
 }

@@ -1,6 +1,7 @@
 package com.github.biz.model.entity;
 
 import com.github.common.base.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -21,6 +22,7 @@ public class ArticleTagEntity extends BaseEntity {
 
 	@Serial
 	private static final long serialVersionUID = -3315194942515716271L;
+
 	/**
 	 * 主键
 	 */
@@ -30,11 +32,13 @@ public class ArticleTagEntity extends BaseEntity {
 	/**
 	 * 文章Id
 	 */
+	@Column(nullable = false)
 	private Long articleId;
 
 	/**
 	 * 标签Id
 	 */
+	@Column(nullable = false)
 	private Long tagId;
 
 }
