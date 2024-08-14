@@ -28,17 +28,12 @@ public class ConfigEntity extends BaseEntity {
 	 */
 	@Id
 	@Column(length = 128)
-	private String key;
+	private String configKey;
 
 	/**
 	 * value
 	 */
 	@Column(length = 512)
-	private String value;
-
-	/**
-	 * value是否加密
-	 */
-	private Boolean encrypt;
+	private String configValue;
 
 }
