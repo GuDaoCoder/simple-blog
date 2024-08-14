@@ -6,4 +6,11 @@ package com.github.biz.service;
  */
 public interface ConfigService {
 
+	/**
+	 * 加载配置
+	 * @param clazz
+	 * @return T
+	 **/
+	<T> T load(Class<T> clazz);
+
 }
