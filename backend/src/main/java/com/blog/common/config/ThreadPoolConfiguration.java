@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @since 2024/7/31
  */
 @Configuration
-public class ThreadPoolConfig {
+public class ThreadPoolConfiguration {
 
 	/**
 	 * 核心线程数 = cpu 核心数 + 1
