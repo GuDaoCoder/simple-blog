@@ -85,6 +85,10 @@ public class MarkdownParser {
 	 */
 	private final Node document;
 
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	public MarkdownParser(Builder builder) throws IOException {
 		this.rootPath = builder.rootPath;
 		this.file = builder.file;

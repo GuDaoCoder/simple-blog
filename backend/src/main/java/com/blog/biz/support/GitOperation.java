@@ -53,6 +53,10 @@ public final class GitOperation {
 	 */
 	private final List<Runnable> operates = new ArrayList<>();
 
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	private GitOperation(Builder builder) throws GitAPIException {
 		this.url = builder.url;
 		this.localPath = builder.localPath;
