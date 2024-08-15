@@ -20,12 +20,12 @@ public class BackendApplication {
 		Environment env = application.getEnvironment();
 		if (Arrays.asList(env.getActiveProfiles()).contains("local")) {
 			String message = """
-				\n----------------------------------------------------------
-					Application '{}' is running!:
-					Local: 		http://localhost:{}
-					Doc: 	http://{}:{}/doc.html
-				----------------------------------------------------------\n
-				""";
+					\n----------------------------------------------------------
+						Application '{}' is running!:
+						Local: 		http://localhost:{}
+						Doc: 	http://{}:{}/doc.html
+					----------------------------------------------------------\n
+					""";
 			log.info(message, env.getProperty("spring.application.name"), env.getProperty("server.port"),
 					IpUtil.getLocalHostAddress(), env.getProperty("server.port"));
 		}
