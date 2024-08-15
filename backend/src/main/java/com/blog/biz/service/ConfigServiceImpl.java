@@ -2,6 +2,7 @@ package com.blog.biz.service;
 
 import com.blog.biz.annotation.Config;
 import com.blog.biz.annotation.ConfigProperty;
+import com.blog.biz.model.config.GitConfigEntity;
 import com.blog.biz.model.entity.ConfigEntity;
 import com.blog.biz.repository.ConfigRepository;
 import com.blog.common.util.SecureUtil;
@@ -18,6 +19,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@SneakyThrows
 	@Override
-	public <T> T load(Class<T> clazz) {
+	public <T> Optional<T> load(Class<T> clazz) {
 		if (clazz == null) {
 			throw new IllegalArgumentException("The provided class cannot be null.");
 		}
@@ -59,6 +61,7 @@ public class ConfigServiceImpl implements ConfigService {
 		List<ConfigEntity> configEntities = configRepository.findAllByConfigKeyLike(prefix + "%");
 		if (CollectionUtils.isEmpty(configEntities)) {
 			log.warn("No configs found for the key prefix [{}].", prefix);
+			return Optional.empty();
 		}
 		Map<String, ConfigEntity> configEntityMap = configEntities.stream()
 			.collect(Collectors.toMap(ConfigEntity::getConfigKey, Function.identity()));
@@ -101,7 +104,7 @@ public class ConfigServiceImpl implements ConfigService {
 				beanWrapper.setPropertyValue(field.getName(), value);
 			}
 		}
-		return object;
+		return Optional.of(object);
 	}
 
 }
