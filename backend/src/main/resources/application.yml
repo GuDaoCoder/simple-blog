@@ -104,7 +104,34 @@ security:
   # 白名单
   white-urls:
     - /admin/login
+    - /swagger-ui.html
+    - /doc.html
+    - /v3/api-docs/**
+    - /webjars/**
+    - /favicon.ico
 
 # 雪花算法配置
 snowflake:
   worker-id: 1
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: order
+    show-extensions: true
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '管理平台'
+      paths-to-match: '/**'
+      packages-to-scan: com.blog.biz.controller.admin
+    - group: '门户'
+      paths-to-match: '/**'
+      packages-to-scan: com.blog.biz.controller.portal
+  default-flat-param-object: true
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
