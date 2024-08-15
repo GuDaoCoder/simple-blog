@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
  * @since 2024/8/12
  */
 @Repository
-public interface ArticleTagRepository extends JpaRepository<ArticleTagEntity, Long>, QuerydslPredicateExecutor<ArticleTagEntity> {
+public interface ArticleTagRepository
+		extends JpaRepository<ArticleTagEntity, Long>, QuerydslPredicateExecutor<ArticleTagEntity> {
 
 }
