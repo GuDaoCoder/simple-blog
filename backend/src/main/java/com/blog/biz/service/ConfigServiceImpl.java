@@ -107,4 +107,9 @@ public class ConfigServiceImpl implements ConfigService {
 		return Optional.of(object);
 	}
 
+	@Override
+	public Optional<GitConfigEntity> loadGitConfig() {
+		return load(GitConfigEntity.class);
+	}
+
 }
