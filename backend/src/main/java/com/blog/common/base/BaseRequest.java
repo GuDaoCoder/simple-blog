@@ -1,8 +1,10 @@
 package com.blog.common.base;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -15,9 +17,10 @@ import java.io.Serializable;
 @Getter
 public abstract class BaseRequest implements Serializable {
 
-	/**
-	 * 请求Id
-	 */
+	@Serial
+	private static final long serialVersionUID = -484136577781030895L;
+
+	@Schema(description = "请求Id")
 	private String requestId;
 
 }

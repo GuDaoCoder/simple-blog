@@ -1,6 +1,7 @@
 package com.blog.common.base;
 
 import com.blog.common.util.DateTimeUtil;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,19 +17,13 @@ import java.io.Serializable;
 @Getter
 public class R<T> implements Serializable {
 
-	/**
-	 * 请求时间戳
-	 */
+	@Schema(description = "请求时间戳")
 	private final Long timestamp;
 
-	/**
-	 * 错误信息
-	 */
+	@Schema(description = "错误信息")
 	private final String errorMsg;
 
-	/**
-	 * 返回数据
-	 */
+	@Schema(description = "返回数据")
 	private final T data;
 
 	public R(T data, String errorMsg) {

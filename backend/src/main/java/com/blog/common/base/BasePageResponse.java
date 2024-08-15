@@ -1,5 +1,6 @@
 package com.blog.common.base;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,24 +21,16 @@ public class BasePageResponse<Response> implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 7162988863813899849L;
 
-	/**
-	 * 页码
-	 */
+	@Schema(description = "页码")
 	private Long pageNumber;
 
-	/**
-	 * 每页数量
-	 */
+	@Schema(description = "每页数量")
 	private Long pageSize;
 
-	/**
-	 * 总数
-	 */
+	@Schema(description = "总数")
 	private Long total;
 
-	/**
-	 * 分页数据
-	 */
+	@Schema(description = "分页数据")
 	private List<Response> items;
 
 }
