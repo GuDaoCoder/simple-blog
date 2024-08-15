@@ -1,6 +1,6 @@
 package com.blog.biz.service;
 
-import com.blog.biz.model.config.GitConfigEntity;
+import com.blog.biz.model.config.GitConfig;
 
 import java.util.Optional;
 
@@ -18,9 +18,16 @@ public interface ConfigService {
 	<T> Optional<T> load(Class<T> clazz);
 
 	/**
-	 * 加载git配置
-	 * @return Optional<GitConfigEntity>
+	 * 保存配置
+	 * @param data
+	 * @return void
 	 **/
-	Optional<GitConfigEntity> loadGitConfig();
+	<T> void save(T data);
+
+	/**
+	 * 加载git配置
+	 * @return Optional<GitConfig>
+	 **/
+	Optional<GitConfig> loadGitConfig();
 
 }

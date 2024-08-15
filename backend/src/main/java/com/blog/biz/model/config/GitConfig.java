@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 @Data
 @Config(prefix = ConfigPrefixConstants.GIT)
-public class GitConfigEntity implements Serializable {
+public class GitConfig implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 6561073467021405986L;

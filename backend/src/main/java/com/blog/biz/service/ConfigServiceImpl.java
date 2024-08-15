@@ -2,7 +2,7 @@ package com.blog.biz.service;
 
 import com.blog.biz.annotation.Config;
 import com.blog.biz.annotation.ConfigProperty;
-import com.blog.biz.model.config.GitConfigEntity;
+import com.blog.biz.model.config.GitConfig;
 import com.blog.biz.model.entity.ConfigEntity;
 import com.blog.biz.repository.ConfigRepository;
 import com.blog.common.util.SecureUtil;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -107,9 +108,64 @@ public class ConfigServiceImpl implements ConfigService {
 		return Optional.of(object);
 	}
 
+	@SneakyThrows
 	@Override
-	public Optional<GitConfigEntity> loadGitConfig() {
-		return load(GitConfigEntity.class);
+	public <T> void save(T data) {
+		if (data == null) {
+			throw new IllegalArgumentException("The data cannot be null.");
+		}
+		Class<?> clazz = data.getClass();
+		if (!clazz.isAnnotationPresent(Config.class)) {
+			throw new IllegalArgumentException("The provided class must have the @Config annotation.");
+		}
+
+		List<ConfigEntity> entities = new ArrayList<>();
+
+		Config config = clazz.getAnnotation(Config.class);
+		String prefix = config.prefix();
+
+		Field[] fields = clazz.getDeclaredFields();
+		for (Field field : fields) {
+			// 不包括静态变量
+			if (Modifier.isStatic(field.getModifiers())) {
+				continue;
+			}
+			// 属性名称
+			String name = field.getName();
+			// 是否加密
+			boolean encrypt = false;
+			// 是否必须
+			boolean required = true;
+
+			if (field.isAnnotationPresent(ConfigProperty.class)) {
+				ConfigProperty configProperty = field.getAnnotation(ConfigProperty.class);
+				if (StringUtils.isNotBlank(configProperty.key())) {
+					name = configProperty.key();
+				}
+				encrypt = configProperty.encrypt();
+				required = configProperty.required();
+			}
+			String configKey = prefix + name;
+
+			field.setAccessible(true);
+			Object value = field.get(data);
+			if (value == null && required) {
+				throw new IllegalArgumentException("The required config [" + configKey + "] is not found.");
+			}
+			if (value != null && encrypt) {
+				value = SecureUtil.encrypt(value.toString());
+			}
+			entities.add(new ConfigEntity(configKey, value != null ? value.toString() : null));
+		}
+
+		if (CollectionUtils.isNotEmpty(entities)) {
+			configRepository.saveAll(entities);
+		}
+	}
+
+	@Override
+	public Optional<GitConfig> loadGitConfig() {
+		return load(GitConfig.class);
 	}
 
 }

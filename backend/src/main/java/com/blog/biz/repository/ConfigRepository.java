@@ -12,7 +12,7 @@ import java.util.List;
  * @since 2024/8/13
  */
 @Repository
-public interface ConfigRepository extends JpaRepository<ConfigEntity, Long>, QuerydslPredicateExecutor<ConfigEntity> {
+public interface ConfigRepository extends JpaRepository<ConfigEntity, String>, QuerydslPredicateExecutor<ConfigEntity> {
 
 	List<ConfigEntity> findAllByConfigKeyLike(String configKeyPrefix);
 
