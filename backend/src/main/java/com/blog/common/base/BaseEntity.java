@@ -1,6 +1,7 @@
 package com.blog.common.base;
 
 import com.blog.common.context.UserDetailContext;
+import com.blog.common.util.DateTimeUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
@@ -49,11 +50,12 @@ public abstract class BaseEntity implements Serializable {
 
 	@PrePersist
 	public void prePersist() {
+		LocalDateTime now = DateTimeUtil.now();
 		if (createTime == null) {
-			createTime = LocalDateTime.now();
+			createTime = now;
 		}
 		if (updateTime == null) {
-			updateTime = LocalDateTime.now();
+			updateTime = now;
 		}
 		if (createBy == null) {
 			createBy = UserDetailContext.getUserId();
