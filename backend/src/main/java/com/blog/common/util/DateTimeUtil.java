@@ -3,6 +3,7 @@ package com.blog.common.util;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * 时间工具类
@@ -86,6 +87,15 @@ public final class DateTimeUtil {
 	 **/
 	public static LocalDateTime parse(String dateTime) {
 		return parse(dateTime, STANDARD_FORMAT);
+	}
+
+	/**
+	 * LocalDateTime转Date
+	 * @param localDateTime
+	 * @return Date
+	 **/
+	public static Date toDate(LocalDateTime localDateTime) {
+		return Date.from(localDateTime.atZone(ZoneOffset.systemDefault()).toInstant());
 	}
 
 }
