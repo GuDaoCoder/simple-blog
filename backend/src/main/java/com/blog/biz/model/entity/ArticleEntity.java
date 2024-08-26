@@ -1,7 +1,7 @@
 package com.blog.biz.model.entity;
 
-import com.blog.biz.enums.PostSource;
-import com.blog.biz.enums.PostStatus;
+import com.blog.biz.enums.ArticleSource;
+import com.blog.biz.enums.ArticleStatus;
 import com.blog.common.base.BaseEntity;
 import com.blog.common.snowflake.SnowflakeIdGenerator;
 import jakarta.persistence.*;
@@ -58,14 +58,14 @@ public class ArticleEntity extends BaseEntity {
 	 */
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20, nullable = false)
-	private PostStatus status;
+	private ArticleStatus status;
 
 	/**
 	 * 文章来源
 	 */
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20, nullable = false)
-	private PostSource source;
+	private ArticleSource source;
 
 	/**
 	 * 所属分类Id

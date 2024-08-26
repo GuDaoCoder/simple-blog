@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum PostStatus {
+public enum ArticleStatus {
 
 	DRAFT("草稿"),
 

@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum PostSource {
+public enum ArticleSource {
 
 	GIT_SYNC("Git同步"),
 
