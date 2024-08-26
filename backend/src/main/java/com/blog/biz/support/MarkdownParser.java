@@ -6,6 +6,7 @@ import com.google.common.io.Files;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.Heading;
 import org.commonmark.node.Node;
@@ -18,9 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -89,7 +87,7 @@ public class MarkdownParser {
 		return new Builder();
 	}
 
-	public MarkdownParser(Builder builder) throws IOException {
+	private MarkdownParser(Builder builder) throws IOException {
 		this.rootPath = builder.rootPath;
 		this.file = builder.file;
 		this.replaceImageUrl = builder.replaceImageUrl;
@@ -107,7 +105,7 @@ public class MarkdownParser {
 			.setTitle(parseTitle())
 			.setSummary(parseSummary())
 			.setContent(parseContent())
-			.setFileLastUpdate(parseLastUpdate())
+			.setFileHash(DigestUtils.md5Hex(originalContent))
 			.setExtra(parseExtra());
 	}
 
@@ -213,15 +211,6 @@ public class MarkdownParser {
 	}
 
 	/**
-	 * 解析文章的最后修改时间
-	 * @param
-	 * @return LocalDateTime
-	 **/
-	public LocalDateTime parseLastUpdate() {
-		return LocalDateTime.ofInstant(Instant.ofEpochMilli(file.lastModified()), ZoneId.systemDefault());
-	}
-
-	/**
 	 * 找到文档中的第一个二级标题
 	 * @param node
 	 * @return Heading
@@ -243,7 +232,7 @@ public class MarkdownParser {
 	 * @param
 	 * @return Extra
 	 **/
-	public Extra parseExtra() {
+	private Extra parseExtra() {
 		if (StringUtils.isNotBlank(originalContent)) {
 			int firstIndex = originalContent.indexOf(THEMATIC_BREAK_SYMBOL);
 			if (firstIndex != -1) {
@@ -339,9 +328,9 @@ public class MarkdownParser {
 		private String content;
 
 		/**
-		 * 文件最后修改时间
+		 * 文件内容hash值
 		 */
-		private LocalDateTime fileLastUpdate;
+		private String fileHash;
 
 		/**
 		 * 额外信息
