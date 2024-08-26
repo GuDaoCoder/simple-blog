@@ -3,9 +3,12 @@ package com.blog.biz.model.entity;
 import com.blog.biz.enums.PostSource;
 import com.blog.biz.enums.PostStatus;
 import com.blog.common.base.BaseEntity;
+import com.blog.common.snowflake.SnowflakeIdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
@@ -14,6 +17,7 @@ import java.time.LocalDateTime;
  * @author Gudao
  * @since 2024/8/12
  */
+@Accessors(chain = true)
 @Setter
 @Getter
 @Entity
@@ -27,6 +31,8 @@ public class ArticleEntity extends BaseEntity {
 	 * 文章Id
 	 */
 	@Id
+	@GeneratedValue(generator = "snowflakeIdGenerator", strategy = GenerationType.IDENTITY)
+	@GenericGenerator(name = "snowflakeIdGenerator", type = SnowflakeIdGenerator.class)
 	private Long articleId;
 
 	/**
@@ -64,7 +70,6 @@ public class ArticleEntity extends BaseEntity {
 	/**
 	 * 所属分类Id
 	 */
-	@Column(nullable = false)
 	private Long categoryId;
 
 	/**
@@ -88,5 +93,11 @@ public class ArticleEntity extends BaseEntity {
 	 * 下架时间
 	 */
 	private LocalDateTime unpublishTime;
+
+	/**
+	 * 文件hash值
+	 */
+	@Column(length = 32)
+	private String fileHash;
 
 }

@@ -5,6 +5,7 @@ import com.blog.common.snowflake.SnowflakeIdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serial;
@@ -15,6 +16,7 @@ import java.io.Serial;
  * @author Gudao
  * @since 2024/8/2
  */
+@Accessors(chain = true)
 @Setter
 @Getter
 @Entity

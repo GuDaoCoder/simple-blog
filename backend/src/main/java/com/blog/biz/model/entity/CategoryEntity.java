@@ -1,9 +1,12 @@
 package com.blog.biz.model.entity;
 
 import com.blog.common.base.BaseEntity;
+import com.blog.common.snowflake.SnowflakeIdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serial;
 
@@ -11,6 +14,7 @@ import java.io.Serial;
  * @author Gudao
  * @since 2024/8/7
  */
+@Accessors(chain = true)
 @Setter
 @Getter
 @Entity
@@ -24,6 +28,8 @@ public class CategoryEntity extends BaseEntity {
 	 * 分类Id
 	 */
 	@Id
+	@GeneratedValue(generator = "snowflakeIdGenerator", strategy = GenerationType.IDENTITY)
+	@GenericGenerator(name = "snowflakeIdGenerator", type = SnowflakeIdGenerator.class)
 	private Long categoryId;
 
 	/**

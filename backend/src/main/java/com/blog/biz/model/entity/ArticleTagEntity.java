@@ -1,12 +1,12 @@
 package com.blog.biz.model.entity;
 
 import com.blog.common.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.blog.common.snowflake.SnowflakeIdGenerator;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serial;
 
@@ -14,6 +14,7 @@ import java.io.Serial;
  * @author Gudao
  * @since 2024/8/12
  */
+@Accessors(chain = true)
 @Setter
 @Getter
 @Entity
@@ -27,6 +28,8 @@ public class ArticleTagEntity extends BaseEntity {
 	 * 主键
 	 */
 	@Id
+	@GeneratedValue(generator = "snowflakeIdGenerator", strategy = GenerationType.IDENTITY)
+	@GenericGenerator(name = "snowflakeIdGenerator", type = SnowflakeIdGenerator.class)
 	private Long articleTagId;
 
 	/**
