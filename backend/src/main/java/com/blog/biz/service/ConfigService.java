@@ -1,6 +1,8 @@
 package com.blog.biz.service;
 
 import com.blog.biz.model.config.GitConfig;
+import com.blog.biz.model.config.LocalStoragePolicyConfig;
+import com.blog.biz.model.config.StoragePolicyConfig;
 
 import java.util.Optional;
 
@@ -29,5 +31,18 @@ public interface ConfigService {
 	 * @return Optional<GitConfig>
 	 **/
 	Optional<GitConfig> loadGitConfig();
+
+	/**
+	 * 
+	 * 加载存储策略配置
+	 * @return Optional<StoragePolicyConfig>
+	 **/
+	Optional<StoragePolicyConfig> loadStoragePolicy();
+
+	/**
+	 * 加载本地存储策略
+	 * @return Optional<LocalStoragePolicyConfig>
+	 **/
+	Optional<LocalStoragePolicyConfig> loadLocalStoragePolicy();
 
 }

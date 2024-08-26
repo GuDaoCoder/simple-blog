@@ -3,6 +3,8 @@ package com.blog.biz.service;
 import com.blog.biz.annotation.Config;
 import com.blog.biz.annotation.ConfigProperty;
 import com.blog.biz.model.config.GitConfig;
+import com.blog.biz.model.config.LocalStoragePolicyConfig;
+import com.blog.biz.model.config.StoragePolicyConfig;
 import com.blog.biz.model.entity.ConfigEntity;
 import com.blog.biz.repository.ConfigRepository;
 import com.blog.common.util.SecureUtil;
@@ -166,6 +168,16 @@ public class ConfigServiceImpl implements ConfigService {
 	@Override
 	public Optional<GitConfig> loadGitConfig() {
 		return load(GitConfig.class);
+	}
+
+	@Override
+	public Optional<StoragePolicyConfig> loadStoragePolicy() {
+		return load(StoragePolicyConfig.class);
+	}
+
+	@Override
+	public Optional<LocalStoragePolicyConfig> loadLocalStoragePolicy() {
+		return load(LocalStoragePolicyConfig.class);
 	}
 
 }
