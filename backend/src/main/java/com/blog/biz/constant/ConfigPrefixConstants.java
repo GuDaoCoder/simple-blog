@@ -11,4 +11,14 @@ public class ConfigPrefixConstants {
 	 */
 	public static final String GIT = "git.";
 
+	/**
+	 * 存储策略
+	 */
+	public static final String STORAGE = "storage.";
+
+	/**
+	 * 本地存储配置
+	 */
+	public static final String LOCAL_STORAGE_POLICY = "localStoragePolicy.";
+
 }
