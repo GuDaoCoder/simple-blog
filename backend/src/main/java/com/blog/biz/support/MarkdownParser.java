@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -336,6 +337,14 @@ public class MarkdownParser {
 		 * 额外信息
 		 */
 		private Extra extra;
+
+		public List<String> getTags() {
+			return Optional.ofNullable(extra).map(Extra::getTags).orElse(new ArrayList<>());
+		}
+
+		public String getCoverPictureUrl() {
+			return Optional.ofNullable(extra).map(Extra::getCoverPictureUrl).orElse(null);
+		}
 
 	}
 

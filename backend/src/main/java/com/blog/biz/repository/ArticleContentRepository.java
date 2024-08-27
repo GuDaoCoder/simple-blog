@@ -13,4 +13,11 @@ import org.springframework.stereotype.Repository;
 public interface ArticleContentRepository
 		extends JpaRepository<ArticleContentEntity, Long>, QuerydslPredicateExecutor<ArticleContentEntity> {
 
+	/**
+	 * 根据article查询单条数据
+	 * @param articleId
+	 * @return ArticleContentEntity
+	 **/
+	ArticleContentEntity findByArticleId(Long articleId);
+
 }

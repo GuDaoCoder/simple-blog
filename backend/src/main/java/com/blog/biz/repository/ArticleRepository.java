@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface ArticleRepository
 		extends JpaRepository<ArticleEntity, Long>, QuerydslPredicateExecutor<ArticleEntity> {
 
+	ArticleEntity findByTitle(String title);
+
 }
