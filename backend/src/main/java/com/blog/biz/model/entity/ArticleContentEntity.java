@@ -19,7 +19,8 @@ import java.io.Serial;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_ARTICLE_CONTENT")
+@Table(name = "T_ARTICLE_CONTENT",
+		indexes = { @Index(name = "idx_article_content_article_id", columnList = "articleId") })
 public class ArticleContentEntity extends BaseEntity {
 
 	@Serial
@@ -37,7 +38,7 @@ public class ArticleContentEntity extends BaseEntity {
 	 * 文章Id
 	 */
 	@Column(nullable = false)
-	private Long postId;
+	private Long articleId;
 
 	/**
 	 * 文章内容

@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serial;
+import java.util.Objects;
 
 /**
  * @author Gudao
@@ -18,7 +19,7 @@ import java.io.Serial;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_ARTICLE_TAG")
+@Table(name = "T_ARTICLE_TAG", indexes = { @Index(name = "idx_article_tag_article_id", columnList = "articleId") })
 public class ArticleTagEntity extends BaseEntity {
 
 	@Serial
@@ -43,5 +44,22 @@ public class ArticleTagEntity extends BaseEntity {
 	 */
 	@Column(nullable = false)
 	private Long tagId;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		ArticleTagEntity that = (ArticleTagEntity) o;
+		return Objects.equals(articleId, that.articleId) && Objects.equals(tagId, that.tagId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(articleId, tagId);
+	}
 
 }

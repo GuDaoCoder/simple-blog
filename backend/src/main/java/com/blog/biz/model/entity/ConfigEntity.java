@@ -1,10 +1,7 @@
 package com.blog.biz.model.entity;
 
 import com.blog.common.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +18,7 @@ import java.io.Serial;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_CONFIG")
+@Table(name = "T_CONFIG", indexes = { @Index(name = "idx_config_config_key", columnList = "configKey") })
 public class ConfigEntity extends BaseEntity {
 
 	@Serial
