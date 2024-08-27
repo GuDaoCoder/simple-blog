@@ -1,8 +1,9 @@
-package com.blog.biz.service;
+package com.blog.biz.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.blog.biz.model.request.LoginRequest;
 import com.blog.biz.model.response.LoginResponse;
+import com.blog.biz.service.AdministratorAuthService;
 import org.springframework.stereotype.Service;
 
 /**

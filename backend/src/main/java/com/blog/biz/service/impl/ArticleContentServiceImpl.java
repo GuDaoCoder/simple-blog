@@ -1,5 +1,6 @@
-package com.blog.biz.service;
+package com.blog.biz.service.impl;
 
+import com.blog.biz.service.ArticleContentService;
 import org.springframework.stereotype.Service;
 
 /**

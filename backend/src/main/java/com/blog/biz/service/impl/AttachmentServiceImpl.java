@@ -1,7 +1,8 @@
-package com.blog.biz.service;
+package com.blog.biz.service.impl;
 
 import com.blog.biz.model.entity.AttachmentEntity;
 import com.blog.biz.repository.AttachmentRepository;
+import com.blog.biz.service.AttachmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

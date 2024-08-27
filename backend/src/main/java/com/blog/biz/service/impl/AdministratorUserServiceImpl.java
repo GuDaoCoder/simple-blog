@@ -1,5 +1,6 @@
-package com.blog.biz.service;
+package com.blog.biz.service.impl;
 
+import com.blog.biz.service.AdministratorUserService;
 import com.blog.common.authorization.UserDetail;
 import com.blog.common.authorization.UserDetailLoadService;
 import org.springframework.stereotype.Service;

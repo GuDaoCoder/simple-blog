@@ -1,4 +1,4 @@
-package com.blog.biz.service;
+package com.blog.biz.service.impl;
 
 import com.blog.biz.annotation.Config;
 import com.blog.biz.annotation.ConfigProperty;
@@ -7,6 +7,7 @@ import com.blog.biz.model.config.LocalStoragePolicyConfig;
 import com.blog.biz.model.config.StoragePolicyConfig;
 import com.blog.biz.model.entity.ConfigEntity;
 import com.blog.biz.repository.ConfigRepository;
+import com.blog.biz.service.ConfigService;
 import com.blog.common.util.SecureUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

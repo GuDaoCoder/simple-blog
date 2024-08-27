@@ -1,7 +1,8 @@
-package com.blog.biz.service;
+package com.blog.biz.service.impl;
 
 import com.blog.biz.model.entity.TagEntity;
 import com.blog.biz.repository.TagRepository;
+import com.blog.biz.service.TagService;
 import com.blog.common.util.ColorUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
