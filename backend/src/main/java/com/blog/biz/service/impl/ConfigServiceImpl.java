@@ -9,21 +9,17 @@ import com.blog.biz.model.entity.ConfigEntity;
 import com.blog.biz.repository.ConfigRepository;
 import com.blog.biz.service.ConfigService;
 import com.blog.common.util.SecureUtil;
-import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,6 +31,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class ConfigServiceImpl implements ConfigService {
+
+	private final Map<Class<?>, ConfigClass> configClassMap = new ConcurrentHashMap<>();
 
 	private final ConfigRepository configRepository;
 
@@ -59,8 +57,9 @@ public class ConfigServiceImpl implements ConfigService {
 			throw new RuntimeException("Failed to create an instance of " + clazz.getName(), e);
 		}
 
-		Config config = clazz.getAnnotation(Config.class);
-		String prefix = config.prefix();
+		ConfigClass configClass = configClassMap.computeIfAbsent(clazz, this::parseConfigClass);
+
+		String prefix = configClass.getPrefix();
 
 		List<ConfigEntity> configEntities = configRepository.findAllByConfigKeyLike(prefix + "%");
 		if (CollectionUtils.isEmpty(configEntities)) {
@@ -73,36 +72,18 @@ public class ConfigServiceImpl implements ConfigService {
 		// 使用BeanWrapper，方便不同类型赋值
 		BeanWrapper beanWrapper = new BeanWrapperImpl(object);
 
-		Field[] fields = clazz.getDeclaredFields();
-		for (Field field : fields) {
-			// 不包括静态变量
-			if (Modifier.isStatic(field.getModifiers())) {
-				continue;
-			}
-			// 属性名称
-			String name = field.getName();
-			// 是否加密
-			boolean encrypt = false;
-			// 是否必须
-			boolean required = true;
+		for (ConfigField configField : configClass.getConfigFields()) {
+			Field field = configField.getField();
 
-			if (field.isAnnotationPresent(ConfigProperty.class)) {
-				ConfigProperty configProperty = field.getAnnotation(ConfigProperty.class);
-				if (StringUtils.isNotBlank(configProperty.key())) {
-					name = configProperty.key();
-				}
-				encrypt = configProperty.encrypt();
-				required = configProperty.required();
-			}
-			String configKey = prefix + name;
+			String configKey = prefix + field.getName();
 			ConfigEntity configEntity = configEntityMap.get(configKey);
-			if (required && configEntity == null) {
+			if (configField.isRequired() && configEntity == null) {
 				throw new IllegalArgumentException("The required config [" + configKey + "] is not found.");
 			}
 			if (configEntity != null && configEntity.getConfigValue() != null) {
 				String value = configEntity.getConfigValue();
 				// 判断是否需要解密
-				if (encrypt) {
+				if (configField.isEncrypt()) {
 					value = SecureUtil.decrypt(value);
 				}
 				beanWrapper.setPropertyValue(field.getName(), value);
@@ -124,38 +105,19 @@ public class ConfigServiceImpl implements ConfigService {
 
 		List<ConfigEntity> entities = new ArrayList<>();
 
-		Config config = clazz.getAnnotation(Config.class);
-		String prefix = config.prefix();
+		ConfigClass configClass = configClassMap.computeIfAbsent(clazz, this::parseConfigClass);
 
-		Field[] fields = clazz.getDeclaredFields();
-		for (Field field : fields) {
-			// 不包括静态变量
-			if (Modifier.isStatic(field.getModifiers())) {
-				continue;
-			}
-			// 属性名称
-			String name = field.getName();
-			// 是否加密
-			boolean encrypt = false;
-			// 是否必须
-			boolean required = true;
+		String prefix = configClass.getPrefix();
 
-			if (field.isAnnotationPresent(ConfigProperty.class)) {
-				ConfigProperty configProperty = field.getAnnotation(ConfigProperty.class);
-				if (StringUtils.isNotBlank(configProperty.key())) {
-					name = configProperty.key();
-				}
-				encrypt = configProperty.encrypt();
-				required = configProperty.required();
-			}
-			String configKey = prefix + name;
-
+		for (ConfigField configField : configClass.getConfigFields()) {
+			Field field = configField.getField();
+			String configKey = prefix + field.getName();
 			field.setAccessible(true);
 			Object value = field.get(data);
-			if (value == null && required) {
+			if (value == null && configField.isRequired()) {
 				throw new IllegalArgumentException("The required config [" + configKey + "] is not found.");
 			}
-			if (value != null && encrypt) {
+			if (value != null && configField.isEncrypt()) {
 				value = SecureUtil.encrypt(value.toString());
 			}
 			entities.add(new ConfigEntity(configKey, value != null ? value.toString() : null));
@@ -179,6 +141,71 @@ public class ConfigServiceImpl implements ConfigService {
 	@Override
 	public Optional<LocalStoragePolicyConfig> loadLocalStoragePolicy() {
 		return load(LocalStoragePolicyConfig.class);
+	}
+
+	/**
+	 * 解析Config类信息
+	 * @param clazz
+	 * @return ConfigClass
+	 **/
+	private ConfigClass parseConfigClass(Class<?> clazz) {
+		Config config = clazz.getAnnotation(Config.class);
+		String prefix = config.prefix();
+
+		List<ConfigField> configFields = Arrays.stream(clazz.getDeclaredFields())
+			.filter(field -> !Modifier.isStatic(field.getModifiers()))
+			.map(field -> {
+				if (field.isAnnotationPresent(ConfigProperty.class)) {
+					ConfigProperty configProperty = field.getAnnotation(ConfigProperty.class);
+					return new ConfigField(field, configProperty.encrypt(), configProperty.required());
+				}
+				else {
+					return new ConfigField(field, false, true);
+				}
+			})
+			.toList();
+		return new ConfigClass(prefix, configFields);
+	}
+
+	@Setter
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	private static class ConfigClass {
+
+		/**
+		 * 前缀
+		 */
+		private String prefix;
+
+		/**
+		 * 字段配置
+		 */
+		private List<ConfigField> configFields;
+
+	}
+
+	@Setter
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	private static class ConfigField {
+
+		/**
+		 * 字段
+		 */
+		private Field field;
+
+		/**
+		 * 是否加密
+		 */
+		private boolean encrypt;
+
+		/**
+		 * 是否必须
+		 */
+		private boolean required;
+
 	}
 
 }
