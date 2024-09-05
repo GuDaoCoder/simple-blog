@@ -3,7 +3,9 @@ package com.blog.biz.service;
 import com.blog.biz.model.config.GitConfig;
 import com.blog.biz.model.config.LocalStoragePolicyConfig;
 import com.blog.biz.model.config.StoragePolicyConfig;
+import com.blog.biz.model.response.ConfigResponse;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -11,6 +13,12 @@ import java.util.Optional;
  * @since 2024/8/13
  */
 public interface ConfigService {
+
+	/**
+	 * 查询所有配置信息
+	 * @return List<ConfigResponse>
+	 **/
+	List<ConfigResponse> list();
 
 	/**
 	 * 加载配置

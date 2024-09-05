@@ -15,6 +15,8 @@ public @interface ConfigProperty {
 
 	String name() default "";
 
+	String desc() default "";
+
 	boolean encrypt() default false;
 
 	boolean required() default true;

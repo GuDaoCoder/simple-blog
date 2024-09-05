@@ -6,8 +6,11 @@ import com.blog.biz.model.config.GitConfig;
 import com.blog.biz.model.config.LocalStoragePolicyConfig;
 import com.blog.biz.model.config.StoragePolicyConfig;
 import com.blog.biz.model.entity.ConfigEntity;
+import com.blog.biz.model.response.ConfigItemResponse;
+import com.blog.biz.model.response.ConfigResponse;
 import com.blog.biz.repository.ConfigRepository;
 import com.blog.biz.service.ConfigService;
+import com.blog.common.util.ReflectUtil;
 import com.blog.common.util.SecureUtil;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +36,50 @@ import java.util.stream.Collectors;
 @Service
 public class ConfigServiceImpl implements ConfigService {
 
-	private final Map<Class<?>, ConfigClass> configClassMap = new ConcurrentHashMap<>();
+	private final Map<Class<?>, ConfigClassContext> configClassMap = new ConcurrentHashMap<>();
 
 	private final ConfigRepository configRepository;
+
+	private Set<Class<?>> classes;
+
+	@SneakyThrows
+	@Override
+	public List<ConfigResponse> list() {
+		List<ConfigEntity> configEntities = configRepository.findAll();
+		if (CollectionUtils.isEmpty(classes)) {
+			classes = ReflectUtil.scanClassesWithAnnotation("com.blog.biz.model.config", Config.class);
+		}
+		if (CollectionUtils.isNotEmpty(configEntities) && CollectionUtils.isNotEmpty(classes)) {
+			Map<String, ConfigEntity> configEntityMap = configEntities.stream()
+				.collect(Collectors.toMap(ConfigEntity::getConfigKey, Function.identity()));
+			return classes.stream().map(clazz -> {
+				ConfigClassContext configClassContext = configClassMap.computeIfAbsent(clazz, this::parseConfigClass);
+				ConfigResponse configResponse = new ConfigResponse();
+				configResponse.setConfigPrefix(configClassContext.getPrefix());
+				configResponse.setConfigDesc(configClassContext.getDesc());
+
+				List<ConfigItemContext> configItemContexts = configClassContext.getConfigItemContexts();
+				if (CollectionUtils.isNotEmpty(configItemContexts)) {
+					List<ConfigItemResponse> configItemResponses = new ArrayList<>();
+					configItemContexts.forEach(configItemContext -> {
+						String configKey = configClassContext.getPrefix() + configItemContext.getName();
+						ConfigEntity configEntity = configEntityMap.get(configKey);
+						if (configEntity != null) {
+							ConfigItemResponse configItemResponse = new ConfigItemResponse();
+							configItemResponse.setConfigItemDesc(configItemContext.getDesc())
+								.setConfigItemValue(configEntity.getConfigValue())
+								.setRequired(configItemContext.isRequired())
+								.setEncrypt(configItemContext.isEncrypt());
+							configItemResponses.add(configItemResponse);
+						}
+					});
+					configResponse.setItems(configItemResponses);
+				}
+				return configResponse;
+			}).toList();
+		}
+		return List.of();
+	}
 
 	@SneakyThrows
 	@Override
@@ -58,9 +102,9 @@ public class ConfigServiceImpl implements ConfigService {
 			throw new RuntimeException("Failed to create an instance of " + clazz.getName(), e);
 		}
 
-		ConfigClass configClass = configClassMap.computeIfAbsent(clazz, this::parseConfigClass);
+		ConfigClassContext configClassContext = configClassMap.computeIfAbsent(clazz, this::parseConfigClass);
 
-		String prefix = configClass.getPrefix();
+		String prefix = configClassContext.getPrefix();
 
 		List<ConfigEntity> configEntities = configRepository.findAllByConfigKeyLike(prefix + "%");
 		if (CollectionUtils.isEmpty(configEntities)) {
@@ -73,21 +117,21 @@ public class ConfigServiceImpl implements ConfigService {
 		// 使用BeanWrapper，方便不同类型赋值
 		BeanWrapper beanWrapper = new BeanWrapperImpl(object);
 
-		for (ConfigField configField : configClass.getConfigFields()) {
-			Field field = configField.getField();
+		for (ConfigItemContext configItemContext : configClassContext.getConfigItemContexts()) {
+			Field field = configItemContext.getField();
 
 			String configKey = prefix + field.getName();
 			ConfigEntity configEntity = configEntityMap.get(configKey);
-			if (configField.isRequired() && configEntity == null) {
+			if (configItemContext.isRequired() && configEntity == null) {
 				throw new IllegalArgumentException("The required config [" + configKey + "] is not found.");
 			}
 			if (configEntity != null && configEntity.getConfigValue() != null) {
 				String value = configEntity.getConfigValue();
 				// 判断是否需要解密
-				if (configField.isEncrypt()) {
+				if (configItemContext.isEncrypt()) {
 					value = SecureUtil.decrypt(value);
 				}
-				beanWrapper.setPropertyValue(configField.getName(), value);
+				beanWrapper.setPropertyValue(configItemContext.getName(), value);
 			}
 		}
 		return Optional.of(object);
@@ -106,19 +150,19 @@ public class ConfigServiceImpl implements ConfigService {
 
 		List<ConfigEntity> entities = new ArrayList<>();
 
-		ConfigClass configClass = configClassMap.computeIfAbsent(clazz, this::parseConfigClass);
+		ConfigClassContext configClassContext = configClassMap.computeIfAbsent(clazz, this::parseConfigClass);
 
-		String prefix = configClass.getPrefix();
+		String prefix = configClassContext.getPrefix();
 
-		for (ConfigField configField : configClass.getConfigFields()) {
-			Field field = configField.getField();
-			String configKey = prefix + configField.getName();
+		for (ConfigItemContext configItemContext : configClassContext.getConfigItemContexts()) {
+			Field field = configItemContext.getField();
+			String configKey = prefix + configItemContext.getName();
 			field.setAccessible(true);
 			Object value = field.get(data);
-			if (value == null && configField.isRequired()) {
+			if (value == null && configItemContext.isRequired()) {
 				throw new IllegalArgumentException("The required config [" + configKey + "] is not found.");
 			}
-			if (value != null && configField.isEncrypt()) {
+			if (value != null && configItemContext.isEncrypt()) {
 				value = SecureUtil.encrypt(value.toString());
 			}
 			entities.add(new ConfigEntity(configKey, value != null ? value.toString() : null));
@@ -149,32 +193,32 @@ public class ConfigServiceImpl implements ConfigService {
 	 * @param clazz
 	 * @return ConfigClass
 	 **/
-	private ConfigClass parseConfigClass(Class<?> clazz) {
+	private ConfigClassContext parseConfigClass(Class<?> clazz) {
 		Config config = clazz.getAnnotation(Config.class);
 		String prefix = config.prefix();
 
-		List<ConfigField> configFields = Arrays.stream(clazz.getDeclaredFields())
+		List<ConfigItemContext> configItemContexts = Arrays.stream(clazz.getDeclaredFields())
 			.filter(field -> !Modifier.isStatic(field.getModifiers()))
 			.map(field -> {
 				if (field.isAnnotationPresent(ConfigProperty.class)) {
 					ConfigProperty configProperty = field.getAnnotation(ConfigProperty.class);
-					return new ConfigField(field,
+					return new ConfigItemContext(field,
 							StringUtils.isNotBlank(configProperty.name()) ? configProperty.name() : field.getName(),
-							configProperty.encrypt(), configProperty.required());
+							configProperty.desc(), configProperty.encrypt(), configProperty.required());
 				}
 				else {
-					return new ConfigField(field, field.getName(), false, true);
+					return new ConfigItemContext(field, field.getName(), null, false, true);
 				}
 			})
 			.toList();
-		return new ConfigClass(prefix, configFields);
+		return new ConfigClassContext(prefix, config.desc(), configItemContexts);
 	}
 
 	@Setter
 	@Getter
 	@NoArgsConstructor
 	@AllArgsConstructor
-	private static class ConfigClass {
+	private static class ConfigClassContext {
 
 		/**
 		 * 前缀
@@ -182,9 +226,14 @@ public class ConfigServiceImpl implements ConfigService {
 		private String prefix;
 
 		/**
+		 * 描述
+		 */
+		private String desc;
+
+		/**
 		 * 字段配置
 		 */
-		private List<ConfigField> configFields;
+		private List<ConfigItemContext> configItemContexts;
 
 	}
 
@@ -192,7 +241,7 @@ public class ConfigServiceImpl implements ConfigService {
 	@Getter
 	@NoArgsConstructor
 	@AllArgsConstructor
-	private static class ConfigField {
+	private static class ConfigItemContext {
 
 		/**
 		 * 字段
@@ -203,6 +252,11 @@ public class ConfigServiceImpl implements ConfigService {
 		 * 映射字段名称
 		 */
 		private String name;
+
+		/**
+		 * 描述
+		 */
+		private String desc;
 
 		/**
 		 * 是否加密

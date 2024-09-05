@@ -15,37 +15,25 @@ import java.io.Serializable;
  * @since 2024/8/13
  */
 @Data
-@Config(prefix = ConfigPrefixConstants.GIT)
+@Config(desc = "Git配置", prefix = ConfigPrefixConstants.GIT)
 public class GitConfig implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 6561073467021405986L;
 
-	/**
-	 * git地址
-	 */
+	@ConfigProperty(desc = "git地址")
 	private String url;
 
-	/**
-	 * 分支
-	 */
+	@ConfigProperty(desc = "分支")
 	private String branch;
 
-	/**
-	 * 用户名
-	 */
-	@ConfigProperty(required = false)
+	@ConfigProperty(desc = "用户名", required = false)
 	private String username;
 
-	/**
-	 * 密码
-	 */
-	@ConfigProperty(encrypt = true, required = false)
+	@ConfigProperty(desc = "密码", encrypt = true, required = false)
 	private String password;
 
-	/**
-	 * 本地路径
-	 */
+	@ConfigProperty(desc = "本地路径")
 	private String localPath;
 
 }
