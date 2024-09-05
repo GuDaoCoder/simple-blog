@@ -12,6 +12,7 @@ import com.blog.common.util.SecureUtil;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.stereotype.Service;
@@ -86,7 +87,7 @@ public class ConfigServiceImpl implements ConfigService {
 				if (configField.isEncrypt()) {
 					value = SecureUtil.decrypt(value);
 				}
-				beanWrapper.setPropertyValue(field.getName(), value);
+				beanWrapper.setPropertyValue(configField.getName(), value);
 			}
 		}
 		return Optional.of(object);
@@ -111,7 +112,7 @@ public class ConfigServiceImpl implements ConfigService {
 
 		for (ConfigField configField : configClass.getConfigFields()) {
 			Field field = configField.getField();
-			String configKey = prefix + field.getName();
+			String configKey = prefix + configField.getName();
 			field.setAccessible(true);
 			Object value = field.get(data);
 			if (value == null && configField.isRequired()) {
@@ -157,10 +158,12 @@ public class ConfigServiceImpl implements ConfigService {
 			.map(field -> {
 				if (field.isAnnotationPresent(ConfigProperty.class)) {
 					ConfigProperty configProperty = field.getAnnotation(ConfigProperty.class);
-					return new ConfigField(field, configProperty.encrypt(), configProperty.required());
+					return new ConfigField(field,
+							StringUtils.isNotBlank(configProperty.name()) ? configProperty.name() : field.getName(),
+							configProperty.encrypt(), configProperty.required());
 				}
 				else {
-					return new ConfigField(field, false, true);
+					return new ConfigField(field, field.getName(), false, true);
 				}
 			})
 			.toList();
@@ -195,6 +198,11 @@ public class ConfigServiceImpl implements ConfigService {
 		 * 字段
 		 */
 		private Field field;
+
+		/**
+		 * 映射字段名称
+		 */
+		private String name;
 
 		/**
 		 * 是否加密

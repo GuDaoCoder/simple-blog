@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ConfigProperty {
 
-	String key() default "";
+	String name() default "";
 
 	boolean encrypt() default false;
 
