@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.io.Serial;
 
@@ -26,7 +27,7 @@ public class BasePageRequest extends BaseRequest {
 	private Integer pageSize = 10;
 
 	public Pageable pageable() {
-		return PageRequest.of(pageNumber - 1, pageSize);
+		return PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.DESC, "createTime"));
 	}
 
 }
