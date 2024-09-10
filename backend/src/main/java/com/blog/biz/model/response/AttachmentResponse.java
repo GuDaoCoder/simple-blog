@@ -2,9 +2,12 @@ package com.blog.biz.model.response;
 
 import com.blog.biz.enums.AttachmentModule;
 import com.blog.biz.enums.StoragePolicy;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 /**
  * @author Gudao
@@ -40,5 +43,13 @@ public class AttachmentResponse {
 
 	@Schema(description = "所属模块")
 	private AttachmentModule module;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@Schema(description = "创建时间")
+	private LocalDateTime createTime;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@Schema(description = "更新时间")
+	private LocalDateTime updateTime;
 
 }
