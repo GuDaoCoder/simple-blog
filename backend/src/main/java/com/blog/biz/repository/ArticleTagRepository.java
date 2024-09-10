@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,5 +22,12 @@ public interface ArticleTagRepository
 	 * @return List<ArticleTagEntity>
 	 **/
 	List<ArticleTagEntity> findAllByArticleId(Long articleId);
+
+	/**
+	 * 根据多个文章id查询文章标签关联关系
+	 * @param articleIds
+	 * @return List<ArticleTagEntity>
+	 **/
+	List<ArticleTagEntity> findAllByArticleIdIn(Collection<Long> articleIds);
 
 }

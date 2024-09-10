@@ -2,6 +2,7 @@ package com.blog.biz.controller.admin;
 
 import com.blog.biz.constant.CommonConstants;
 import com.blog.biz.model.request.ArticleQueryRequest;
+import com.blog.biz.model.response.ArticleDetailResponse;
 import com.blog.biz.model.response.ArticleResponse;
 import com.blog.biz.service.ArticleService;
 import com.blog.biz.sync.ArticleSyncService;
@@ -32,7 +33,7 @@ public class ArticleController {
 
 	@Operation(summary = "分页查询文章信息")
 	@GetMapping
-	public R<PageResponse<ArticleResponse>> query(ArticleQueryRequest request) {
+	public R<PageResponse<ArticleDetailResponse>> query(ArticleQueryRequest request) {
 		return R.success(articleService.query(request));
 	}
 

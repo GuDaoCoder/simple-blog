@@ -3,6 +3,7 @@ package com.blog.common.util;
 import com.blog.common.base.PageResponse;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -24,6 +25,21 @@ public class PageUtil {
 			.setPageSize(page.getSize())
 			.setTotal(page.getTotalElements())
 			.setItems(page.getContent().stream().map(convert).toList());
+	}
+
+	/**
+	 * 查询结果转换为分页结果数据
+	 * @param page
+	 * @param convert
+	 * @return PageResponse<Response>
+	 **/
+	public static <Response, Entity> PageResponse<Response> toCustomResult(Page<Entity> page,
+			Function<List<Entity>, List<Response>> convert) {
+		PageResponse<Response> pageResponse = new PageResponse<>();
+		return pageResponse.setPageNumber(page.getNumber() + 1)
+			.setPageSize(page.getSize())
+			.setTotal(page.getTotalElements())
+			.setItems(convert.apply(page.getContent()));
 	}
 
 }

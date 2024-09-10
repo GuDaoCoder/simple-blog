@@ -1,7 +1,7 @@
 package com.blog.biz.service;
 
 import com.blog.biz.model.request.ArticleQueryRequest;
-import com.blog.biz.model.response.ArticleResponse;
+import com.blog.biz.model.response.ArticleDetailResponse;
 import com.blog.common.base.PageResponse;
 
 /**
@@ -13,9 +13,9 @@ public interface ArticleService {
 	/**
 	 * 分页查询文章信息
 	 * @param request
-	 * @return PageResponse<ArticleResponse>
+	 * @return PageResponse<ArticleDetailResponse>
 	 **/
-	PageResponse<ArticleResponse> query(ArticleQueryRequest request);
+	PageResponse<ArticleDetailResponse> query(ArticleQueryRequest request);
 
 	/**
 	 * 查询文章内容
