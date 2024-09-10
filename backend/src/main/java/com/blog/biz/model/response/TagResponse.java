@@ -1,8 +1,7 @@
 package com.blog.biz.model.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,30 +20,20 @@ public class TagResponse implements Serializable {
 	@Serial
 	private static final long serialVersionUID = -1913806770602840312L;
 
-	/**
-	 * 标签Id
-	 */
+	@Schema(description = "标签Id")
 	private Long tagId;
 
-	/**
-	 * 标签名称
-	 */
+	@Schema(description = "标签名称")
 	private String tagName;
 
-	/**
-	 * 颜色
-	 */
+	@Schema(description = "颜色")
 	private String color;
 
-	/**
-	 * 创建时间
-	 */
+	@Schema(description = "创建时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private LocalDateTime createTime;
 
-	/**
-	 * 更新时间
-	 */
+	@Schema(description = "更新时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private LocalDateTime updateTime;
 

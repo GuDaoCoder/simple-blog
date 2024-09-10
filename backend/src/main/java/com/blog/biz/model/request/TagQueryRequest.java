@@ -3,6 +3,7 @@ package com.blog.biz.model.request;
 import com.blog.common.base.BasePageRequest;
 import com.blog.common.jpa.query.Query;
 import com.blog.common.jpa.query.QueryType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,9 +20,7 @@ public class TagQueryRequest extends BasePageRequest {
 	@Serial
 	private static final long serialVersionUID = 1551861520410882388L;
 
-	/**
-	 * 标签名称
-	 */
+	@Schema(description = "标签名称")
 	@Query(type = QueryType.LIKE)
 	private String tagName;
 
