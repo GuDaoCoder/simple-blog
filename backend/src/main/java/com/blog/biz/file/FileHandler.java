@@ -1,5 +1,6 @@
 package com.blog.biz.file;
 
+import com.blog.biz.enums.AttachmentModule;
 import com.blog.biz.enums.StoragePolicy;
 import com.blog.biz.model.entity.AttachmentEntity;
 
@@ -20,8 +21,9 @@ public interface FileHandler {
 	/**
 	 * 上传文件
 	 * @param file
+	 * @param module
 	 * @return AttachmentEntity
 	 **/
-	AttachmentEntity upload(File file);
+	AttachmentEntity upload(File file, AttachmentModule module);
 
 }

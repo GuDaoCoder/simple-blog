@@ -2,6 +2,7 @@ package com.blog.biz.sync;
 
 import com.blog.biz.enums.ArticleSource;
 import com.blog.biz.enums.ArticleStatus;
+import com.blog.biz.enums.AttachmentModule;
 import com.blog.biz.exception.BlogSyncException;
 import com.blog.biz.file.FileFactory;
 import com.blog.biz.model.config.GitConfig;
@@ -363,7 +364,8 @@ public class GitArticleSyncServiceImpl implements ArticleSyncService {
 					if (StringUtils.isNotBlank(originalImageUrl)) {
 						File imageFile = new File(file.getParentFile(), originalImageUrl);
 						if (imageFile.exists()) {
-							AttachmentEntity attachmentEntity = fileFactory.getFileHandler().upload(imageFile);
+							AttachmentEntity attachmentEntity = fileFactory.getFileHandler()
+								.upload(imageFile, AttachmentModule.PICTURE_BED);
 							return attachmentEntity.getPath();
 						}
 					}

@@ -1,5 +1,6 @@
 package com.blog.biz.file;
 
+import com.blog.biz.enums.AttachmentModule;
 import com.blog.biz.enums.StoragePolicy;
 import com.blog.biz.model.config.LocalStoragePolicyConfig;
 import com.blog.biz.model.entity.AttachmentEntity;
@@ -39,7 +40,7 @@ public class LocalFileHandler implements FileHandler {
 
 	@SneakyThrows
 	@Override
-	public AttachmentEntity upload(File file) {
+	public AttachmentEntity upload(File file, AttachmentModule module) {
 		Assert.notNull(file, "The upload file cannot be null");
 		// 文件绝对路径MD5加密作为存储名称
 		String storageName = DigestUtils.md5Hex(file.getAbsolutePath());
@@ -68,7 +69,8 @@ public class LocalFileHandler implements FileHandler {
 				.setPath(path)
 				.setSize(FileUtil.getFileKbSize(file))
 				.setStoragePolicy(StoragePolicy.LOCAL)
-				.setFileHash(DigestUtils.md5Hex(Files.readAllBytes(file.toPath())));
+				.setFileHash(DigestUtils.md5Hex(Files.readAllBytes(file.toPath())))
+				.setModule(module);
 			// 复制文件
 			FileUtils.copyFile(file, new File(path));
 			// 保存附件信息

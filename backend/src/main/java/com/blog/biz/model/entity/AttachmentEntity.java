@@ -1,5 +1,6 @@
 package com.blog.biz.model.entity;
 
+import com.blog.biz.enums.AttachmentModule;
 import com.blog.biz.enums.StoragePolicy;
 import com.blog.common.base.BaseEntity;
 import com.blog.common.snowflake.SnowflakeIdGenerator;
@@ -77,5 +78,12 @@ public class AttachmentEntity extends BaseEntity {
 	 */
 	@Column(length = 32)
 	private String fileHash;
+
+	/**
+	 * 所属模块
+	 */
+	@Column(length = 20, nullable = false)
+	@Enumerated(EnumType.STRING)
+	private AttachmentModule module;
 
 }
