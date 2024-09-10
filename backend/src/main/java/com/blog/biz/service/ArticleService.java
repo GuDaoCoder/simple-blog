@@ -17,4 +17,11 @@ public interface ArticleService {
 	 **/
 	PageResponse<ArticleResponse> query(ArticleQueryRequest request);
 
+	/**
+	 * 查询文章内容
+	 * @param articleId
+	 * @return String
+	 **/
+	String getContent(Long articleId);
+
 }
