@@ -1,9 +1,16 @@
 package com.blog.biz.controller.admin;
 
 import com.blog.biz.constant.CommonConstants;
+import com.blog.biz.model.request.ArticleQueryRequest;
+import com.blog.biz.model.response.ArticleResponse;
 import com.blog.biz.service.ArticleService;
+import com.blog.biz.sync.ArticleSyncService;
+import com.blog.common.base.PageResponse;
+import com.blog.common.base.R;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,5 +25,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticleController {
 
 	private final ArticleService articleService;
+
+	private final ArticleSyncService articleSyncService;
+
+	@Operation(summary = "分页查询文章信息")
+	@GetMapping
+	public R<PageResponse<ArticleResponse>> query(ArticleQueryRequest request) {
+		return R.success(articleService.query(request));
+	}
+
+	@Operation(summary = "同步")
+	@GetMapping("/sync")
+	public R<Void> sync() {
+		articleSyncService.sync();
+		return R.success();
+	}
 
 }

@@ -2,8 +2,8 @@ package com.blog.biz.repository;
 
 import com.blog.biz.model.entity.ArticleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -15,8 +15,7 @@ import java.util.Set;
  * @since 2024/8/12
  */
 @Repository
-public interface ArticleRepository
-		extends JpaRepository<ArticleEntity, Long>, QuerydslPredicateExecutor<ArticleEntity> {
+public interface ArticleRepository extends JpaRepository<ArticleEntity, Long>, JpaSpecificationExecutor<ArticleEntity> {
 
 	ArticleEntity findByTitle(String title);
 
