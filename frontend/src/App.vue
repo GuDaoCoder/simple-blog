@@ -4,7 +4,7 @@ import { RouterView } from 'vue-router'
 
 <template>
   <h1>HelloWorld</h1>
-
+  <tiny-button type="danger" plain> 危险按钮 </tiny-button>
   <RouterView />
 </template>
 
