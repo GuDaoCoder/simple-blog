@@ -10,5 +10,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TinyButton: typeof import('@opentiny/vue')['Button']
+    TinyContainer: typeof import('@opentiny/vue')['Container']
   }
 }

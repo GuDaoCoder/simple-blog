@@ -4,7 +4,7 @@ const HOME: RouteRaw = {
   path: '/admin',
   name: 'admin',
   redirect: '/admin/home',
-  component: () => import('@/views/admin/home/index.vue'),
+  component: () => import('@layout/admin/index.vue'),
   children: [
     {
       name: 'admin-home',
