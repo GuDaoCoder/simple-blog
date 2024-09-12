@@ -15,6 +15,7 @@ export default defineConfig({
       '@img': fileURLToPath(new URL('./src/assets/img', import.meta.url)), // 图片
       '@plugins': fileURLToPath(new URL('./src/plugins', import.meta.url)), // 本地插件
       '@components': fileURLToPath(new URL('./src/components', import.meta.url)), // 公共组件
+      '@layout': fileURLToPath(new URL('./src/layout', import.meta.url)), // 布局
       '@views': fileURLToPath(new URL('./src/views', import.meta.url)) // 路由组件
     }
   }

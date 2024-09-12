@@ -13,6 +13,7 @@
       "@img/*": ["./src/assets/img/*"],
       "@plugins/*": ["./src/plugins/*"],
       "@components/*": ["./src/components/*"],
+      "@layout/*": ["./src/layout/*"],
       "@views/*": ["./src/views/*"]
     }
   }
