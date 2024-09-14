@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="main">
     <router-view v-slot="{ Component, route }">
       <transition name="fade" mode="out-in" appear>
-        <div>
+        <div class="content">
           <component :is="Component" :key="route.path" />
         </div>
       </transition>
@@ -12,4 +12,18 @@
 
 <script setup lang="ts"></script>
 
-<style scoped></style>
+<style scoped>
+.main {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background-color: #f4f5f6;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background-color: #ffffff;
+}
+</style>
