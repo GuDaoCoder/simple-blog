@@ -59,6 +59,7 @@ const handleNodeClick = (node: any) => {
   --ti-tree-menu-border-color: #fff;
 }
 .menu {
+  margin-top: 5px;
   width: 200px;
 }
 </style>
