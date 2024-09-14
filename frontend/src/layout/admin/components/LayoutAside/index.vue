@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { IconDocument, IconSetting } from '@opentiny/vue-icon'
+import { IconPublicHome, IconDocument, IconSetting } from '@opentiny/vue-icon'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -25,34 +25,40 @@ const router = useRouter()
 const menuData = ref([
   {
     id: 1,
+    path: '/admin/home',
+    label: '首页',
+    customIcon: IconPublicHome()
+  },
+  {
+    id: 2,
     label: '博客管理',
     customIcon: IconDocument(),
     children: [
       {
-        id: 11,
-        code: 'admin-article',
+        id: 21,
+        path: '/admin/article',
         label: '文章管理'
       },
       {
-        id: 12,
+        id: 22,
         label: '分类管理'
       },
       {
-        id: 13,
+        id: 23,
         label: '标签管理'
       }
     ]
   },
   {
-    id: 2,
+    id: 3,
     label: '系统管理',
     customIcon: IconSetting()
   }
 ])
 
 const handleNodeClick = (node: any) => {
-  if (!node.children && node.code) {
-    router.push({ name: node.code })
+  if (!node.children && node.path) {
+    router.push({ path: node.path })
   }
 }
 </script>
