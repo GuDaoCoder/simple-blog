@@ -11,5 +11,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     TinyButton: typeof import('@opentiny/vue')['Button']
     TinyContainer: typeof import('@opentiny/vue')['Container']
+    TinyTreeMenu: typeof import('@opentiny/vue')['TreeMenu']
   }
 }
