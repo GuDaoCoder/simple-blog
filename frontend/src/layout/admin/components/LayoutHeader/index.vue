@@ -14,18 +14,17 @@
 
 <script setup lang="ts">
 import { iconApplication } from '@opentiny/vue-icon'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+console.log(route.matched)
 
 const IconApplication = iconApplication()
 
-const breadcrumboptions = ref([
-  {
-    label: '博客'
-  },
-  {
-    label: '文章'
-  }
-])
+const breadcrumboptions = computed(() =>
+  route.matched.filter((o) => o.meta.title).map((o) => ({ label: o.meta.title }))
+)
 </script>
 
 <style scoped lang="scss">
