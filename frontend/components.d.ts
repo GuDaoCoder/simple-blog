@@ -9,6 +9,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TinyBreadcrumb: typeof import('@opentiny/vue')['Breadcrumb']
+    TinyBreadcrumbItem: typeof import('@opentiny/vue')['BreadcrumbItem']
     TinyButton: (typeof import('@opentiny/vue'))['Button']
     TinyContainer: typeof import('@opentiny/vue')['Container']
     TinyDropdown: (typeof import('@opentiny/vue'))['Dropdown']
