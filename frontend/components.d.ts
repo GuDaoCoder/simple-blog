@@ -9,11 +9,13 @@ declare module 'vue' {
   export interface GlobalComponents {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TinyButton: typeof import('@opentiny/vue')['Button']
+    TinyButton: (typeof import('@opentiny/vue'))['Button']
     TinyContainer: typeof import('@opentiny/vue')['Container']
-    TinyDropdown: typeof import('@opentiny/vue')['Dropdown']
-    TinyDropdownItem: typeof import('@opentiny/vue')['DropdownItem']
-    TinyDropdownMenu: typeof import('@opentiny/vue')['DropdownMenu']
+    TinyDropdown: (typeof import('@opentiny/vue'))['Dropdown']
+    TinyDropdownItem: (typeof import('@opentiny/vue'))['DropdownItem']
+    TinyDropdownMenu: (typeof import('@opentiny/vue'))['DropdownMenu']
+    TinyTabItem: typeof import('@opentiny/vue')['TabItem']
+    TinyTabs: typeof import('@opentiny/vue')['Tabs']
     TinyTreeMenu: typeof import('@opentiny/vue')['TreeMenu']
     TinyUserHead: typeof import('@opentiny/vue')['UserHead']
   }

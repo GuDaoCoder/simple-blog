@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tiny-container pattern="legend">
+    <tiny-container pattern="fashion">
       <layout-main />
       <template #header>
         <layout-header />
@@ -8,9 +8,9 @@
       <template #aside>
         <layout-aside />
       </template>
-      <template #footer>
+      <!-- <template #footer>
         <layout-footer />
-      </template>
+      </template> -->
     </tiny-container>
   </div>
 </template>
@@ -19,7 +19,6 @@
 import LayoutMain from './components/LayoutMain/index.vue'
 import LayoutHeader from './components/LayoutHeader/index.vue'
 import LayoutAside from './components/LayoutAside/index.vue'
-import LayoutFooter from './components/LayoutFooter/index.vue'
 </script>
 
 <style scoped lang="scss"></style>

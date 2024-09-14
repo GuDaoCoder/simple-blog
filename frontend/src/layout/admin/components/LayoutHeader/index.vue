@@ -18,7 +18,7 @@
   align-items: center;
   height: 100%;
   padding: 0 20px;
-  box-shadow: 0 4px 6px #0003;
+  border-bottom: 1px solid #d8dae2;
 }
 
 .right-sider {

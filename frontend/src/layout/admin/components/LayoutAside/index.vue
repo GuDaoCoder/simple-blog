@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div class="asider">
+    <div class="logo-contaner">
+      <h2>simple-blog</h2>
+    </div>
     <tiny-tree-menu
       class="menu"
       :data="menuData"
@@ -55,11 +58,20 @@ const handleNodeClick = (node: any) => {
 </script>
 
 <style scoped lang="scss">
-:deep(.tiny-tree-menu) {
-  --ti-tree-menu-border-color: #fff;
+.asider {
+  height: 100%;
+  border-right: 1px solid #d8dae2;
+}
+.logo-contaner {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .menu {
   margin-top: 5px;
   width: 200px;
+  background-color: #142031;
 }
 </style>
