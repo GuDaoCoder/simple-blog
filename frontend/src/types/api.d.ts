@@ -91,3 +91,57 @@ declare namespace ApiTag {
     updateTime: string
   }
 }
+
+/**
+ * 分类
+ */
+declare namespace ApiCategory {
+  interface QueryForm {
+    categoryName: string
+  }
+
+  type QueryRequest = ApiCommon.BaseRequest & Partial<QueryForm>
+
+  interface QueryResponse {
+    /**
+     * 分类Id
+     */
+    categoryId: number
+    /**
+     * 分类名称
+     */
+    categoryName: string
+    /**
+     * 父级分类Id
+     */
+    parentCategoryId: number
+    /**
+     * 分类路径Id
+     */
+    fullId: string
+    /**
+     * 排序
+     */
+    orderNo: number
+    /**
+     * 层级
+     */
+    level: number
+    /**
+     * 文章数量
+     */
+    articleCount: number
+    /**
+     * 创建时间
+     */
+    createTime: string
+    /**
+     * 更新时间
+     */
+    updateTime: string
+    /**
+     * 子分类
+     */
+    children: QueryResponse[]
+  }
+}

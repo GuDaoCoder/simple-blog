@@ -41,6 +41,7 @@ const menuData = ref([
       },
       {
         id: 22,
+        path: '/admin/category',
         label: '分类管理'
       },
       {

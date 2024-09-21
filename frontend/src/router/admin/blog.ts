@@ -18,6 +18,14 @@ const BLOG: RouteRaw = {
       }
     },
     {
+      name: 'admin-category',
+      path: '/admin/category',
+      component: () => import('@views/admin/category/index.vue'),
+      meta: {
+        title: '分类管理'
+      }
+    },
+    {
       name: 'admin-tag',
       path: '/admin/tag',
       component: () => import('@views/admin/tag/index.vue'),
