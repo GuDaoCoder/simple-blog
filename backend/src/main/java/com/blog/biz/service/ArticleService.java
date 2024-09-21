@@ -24,4 +24,18 @@ public interface ArticleService {
 	 **/
 	String getContent(Long articleId);
 
+	/**
+	 * 发布文章
+	 * @param articleId
+	 * @return void
+	 **/
+	void publish(Long articleId);
+
+	/**
+	 * 下架文章
+	 * @param articleId
+	 * @return void
+	 **/
+	void unpublish(Long articleId);
+
 }

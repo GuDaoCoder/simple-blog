@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Gudao
@@ -41,6 +38,20 @@ public class ArticleController {
 	@GetMapping("/{articleId}/content")
 	public R<String> getContent(@Parameter(description = "文章Id") @PathVariable("articleId") Long articleId) {
 		return R.success(articleService.getContent(articleId));
+	}
+
+	@Operation(summary = "发布文章")
+	@PatchMapping("/{articleId}/publish")
+	public R<Void> publish(@Parameter(description = "文章Id") @PathVariable("articleId") Long articleId) {
+		articleService.publish(articleId);
+		return R.success();
+	}
+
+	@Operation(summary = "下架文章")
+	@PatchMapping("/{articleId}/unpublish")
+	public R<Void> unpublish(@Parameter(description = "文章Id") @PathVariable("articleId") Long articleId) {
+		articleService.unpublish(articleId);
+		return R.success();
 	}
 
 	@Operation(summary = "同步")

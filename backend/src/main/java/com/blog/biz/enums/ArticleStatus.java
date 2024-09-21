@@ -10,12 +10,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ArticleStatus {
-
-	DRAFT("草稿"),
-
+	
 	PUBLISHED("已发布"),
 
-	REMOVED("已下架"),;
+	UNPUBLISHED("未发布"),;
 
 	private final String label;
 

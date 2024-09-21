@@ -1,5 +1,6 @@
 package com.blog.biz.service.impl;
 
+import com.blog.biz.enums.ArticleStatus;
 import com.blog.biz.mapper.ArticleMapper;
 import com.blog.biz.mapper.TagMapper;
 import com.blog.biz.model.entity.ArticleContentEntity;
@@ -8,13 +9,14 @@ import com.blog.biz.model.entity.ArticleTagEntity;
 import com.blog.biz.model.entity.TagEntity;
 import com.blog.biz.model.request.ArticleQueryRequest;
 import com.blog.biz.model.response.ArticleDetailResponse;
-import com.blog.biz.model.response.ArticleResponse;
 import com.blog.biz.repository.ArticleContentRepository;
 import com.blog.biz.repository.ArticleRepository;
 import com.blog.biz.repository.ArticleTagRepository;
 import com.blog.biz.repository.TagRepository;
 import com.blog.biz.service.ArticleService;
 import com.blog.common.base.PageResponse;
+import com.blog.common.exception.BusinessException;
+import com.blog.common.exception.DataNotFoundException;
 import com.blog.common.jpa.query.QuerySpecificationBuilder;
 import com.blog.common.util.PageUtil;
 import lombok.RequiredArgsConstructor;
@@ -109,6 +111,28 @@ public class ArticleServiceImpl implements ArticleService {
 		return Optional.ofNullable(articleContentRepository.findByArticleId(articleId))
 			.map(ArticleContentEntity::getContent)
 			.orElse(null);
+	}
+
+	@Override
+	public void publish(Long articleId) {
+		ArticleEntity articleEntity = articleRepository.findById(articleId)
+			.orElseThrow(() -> new DataNotFoundException("文章不存在或已被删除"));
+		if (!ArticleStatus.UNPUBLISHED.equals(articleEntity.getStatus())) {
+			throw new BusinessException("只有未发布的文章可以发布");
+		}
+		articleEntity.setStatus(ArticleStatus.PUBLISHED);
+		articleRepository.save(articleEntity);
+	}
+
+	@Override
+	public void unpublish(Long articleId) {
+		ArticleEntity articleEntity = articleRepository.findById(articleId)
+			.orElseThrow(() -> new DataNotFoundException("文章不存在或已被删除"));
+		if (!ArticleStatus.PUBLISHED.equals(articleEntity.getStatus())) {
+			throw new BusinessException("只有已发布的文章可以下架");
+		}
+		articleEntity.setStatus(ArticleStatus.UNPUBLISHED);
+		articleRepository.save(articleEntity);
 	}
 
 }

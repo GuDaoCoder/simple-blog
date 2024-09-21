@@ -207,7 +207,7 @@ public class GitArticleSyncServiceImpl implements ArticleSyncService {
 				.setCoverPictureUrl(mdContext.getCoverPictureUrl())
 				.setFileHash(parsedFileHash)
 				.setSource(ArticleSource.GIT_SYNC)
-				.setStatus(ArticleStatus.DRAFT)
+				.setStatus(ArticleStatus.UNPUBLISHED)
 				.setTop(Boolean.FALSE)
 				.setEnableComment(Boolean.FALSE)
 				.setCategoryId(parsedCategoryId);
