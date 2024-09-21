@@ -128,7 +128,8 @@ public class GitArticleSyncServiceImpl implements ArticleSyncService {
 					.setLevel(parsedCategory.getLevel())
 					.setOrderNo(parsedCategory.getOrderNo())
 					.setParentCategoryId(parentCategoryEntity == null ? 0L : parentCategoryEntity.getCategoryId())
-					.setFullId(parentCategoryEntity == null ? "0" : categoryKey(parentCategoryEntity));
+					.setFullId(parentCategoryEntity == null ? "0"
+							: parentCategoryEntity.getFullId() + "-" + parentCategoryEntity.getCategoryId());
 				categoryRepository.save(categoryEntity);
 				existsCategoryMap.put(categoryKey(categoryEntity), categoryEntity);
 			}
