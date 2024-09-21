@@ -145,3 +145,96 @@ declare namespace ApiCategory {
     children: QueryResponse[]
   }
 }
+
+/**
+ * 文章
+ */
+declare namespace ApiArticle {
+  interface QueryForm {
+    /**
+     * 文章Id
+     */
+    articleId: number
+    /**
+     * 标题
+     */
+    title: string
+    /**
+     * 状态
+     */
+    status: 'DRAFT' | 'PUBLISHED' | 'REMOVED'
+    /**
+     * 文章来源
+     */
+    source: 'GIT_SYNC'
+    /**
+     * 所属分类Id
+     */
+    categoryId: number
+  }
+
+  type QueryRequest = ApiCommon.PageRequest & Partial<QueryForm>
+
+  interface QueryResponse {
+    /**
+     * 文章Id
+     */
+    articleId: number
+    /**
+     * 标题
+     */
+    title: string
+    /**
+     * 摘要
+     */
+    summary: string
+    /**
+     * 封面图片链接
+     */
+    coverPictureUrl: string
+    /**
+     * 状态
+     */
+    status: 'DRAFT' | 'PUBLISHED' | 'REMOVED'
+    /**
+     * 文章来源
+     */
+    source: 'GIT_SYNC'
+    /**
+     * 所属分类Id
+     */
+    categoryId: number
+    /**
+     * 是否置顶
+     */
+    top: boolean
+    /**
+     * 是否开启评论
+     */
+    enableComment: boolean
+    /**
+     * 发布时间
+     */
+    publishTime: string
+    /**
+     * 下架时间
+     */
+    unpublishTime: string
+    /**
+     * 文件hash值
+     */
+    fileHash: string
+    /**
+     * 创建时间
+     */
+    createTime: string
+    /**
+     * 更新时间
+     */
+    updateTime: string
+    /**
+     * 标签信息
+     */
+    tags: ApiTag.QueryResponse[]
+  }
+}
