@@ -45,6 +45,7 @@ const menuData = ref([
       },
       {
         id: 23,
+        path: '/admin/tag',
         label: '标签管理'
       }
     ]

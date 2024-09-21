@@ -12,9 +12,17 @@ const BLOG: RouteRaw = {
     {
       name: 'admin-article',
       path: '/admin/article',
-      component: () => import('@/views/admin/article/index.vue'),
+      component: () => import('@views/admin/article/index.vue'),
       meta: {
         title: '文章管理'
+      }
+    },
+    {
+      name: 'admin-tag',
+      path: '/admin/tag',
+      component: () => import('@views/admin/tag/index.vue'),
+      meta: {
+        title: '标签管理'
       }
     }
   ]

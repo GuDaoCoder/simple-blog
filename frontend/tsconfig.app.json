@@ -16,7 +16,10 @@
       "@layout/*": ["./src/layout/*"],
       "@config/*": ["./src/config/*"],
       "@store/*": ["./src/store/*"],
-      "@views/*": ["./src/views/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@views/*": ["./src/views/*"],
+      "@types/*": ["./src/types/*"],
+      "@api/*": ["./src/api/*"]
     }
   }
 }

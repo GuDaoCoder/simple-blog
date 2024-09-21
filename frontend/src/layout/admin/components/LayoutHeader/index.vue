@@ -18,7 +18,6 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-console.log(route.matched)
 
 const IconApplication = iconApplication()
 
