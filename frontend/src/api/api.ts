@@ -15,6 +15,11 @@ export async function put<T>(url: string, data?: any): Promise<T> {
   return response.data.data
 }
 
+export async function patch<T>(url: string, data?: any): Promise<T> {
+  const response = await axiosInstance.patch<ApiCommon.Result<T>>(url, data)
+  return response.data.data
+}
+
 export async function del<T>(url: string, params?: any): Promise<T> {
   const response = await axiosInstance.delete<ApiCommon.Result<T>>(url, { params })
   return response.data.data

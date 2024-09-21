@@ -48,21 +48,26 @@
     <tiny-grid-column field="summary" title="摘要" show-overflow show-header-tip />
     <tiny-grid-column title="标签" show-overflow show-header-tip>
       <template #default="data">
-        <tiny-tag
-          class="blog-tag"
-          v-for="tag in data.row.tags"
-          :key="tag.tagId"
-          :value="tag.tagName"
-          :color="tag.color"
-          effect="dark"
-        />
+        <!-- 宽度不够时自动换行 -->
+        <div style="white-space: normal">
+          <tiny-tag
+            class="blog-tag"
+            v-for="tag in data.row.tags"
+            :key="tag.tagId"
+            :value="tag.tagName"
+            :color="tag.color"
+            effect="dark"
+          />
+        </div>
       </template>
     </tiny-grid-column>
-    <tiny-grid-column field="status" title="状态" show-overflow show-header-tip width="60px">
-      <template #default="data">{{ dictionary.articleStatus[data.row.status] }}</template>
-    </tiny-grid-column>
-    <tiny-grid-column field="source" title="文章来源" show-overflow show-header-tip width="80px">
-      <template #default="data">{{ dictionary.articleSource[data.row.source] }}</template>
+    <tiny-grid-column field="status" title="状态" show-overflow show-header-tip width="80px">
+      <template #default="data">
+        <tiny-tag
+          effect="dark"
+          :type="getStatusTagType(data.row)"
+          :value="dictionary.articleStatus[data.row.status]"
+      /></template>
     </tiny-grid-column>
     <tiny-grid-column field="top" title="是否置顶" show-overflow show-header-tip width="80px">
       <template #default="data">
@@ -102,7 +107,13 @@
       width="160px"
     />
     <tiny-grid-column title="操作" fixed="right" width="150px">
-      <tiny-action-menu :options="operateOptions" max-show-num="3" />
+      <template #default="data">
+        <tiny-action-menu
+          :options="getOperateOptions(data.row)"
+          :max-show-num="3"
+          @item-click="handleActionClick"
+        />
+      </template>
     </tiny-grid-column>
   </tiny-grid>
 
@@ -116,21 +127,77 @@
 <script setup lang="ts">
 import SearchButtonGroup from '@components/SearchButtonGroup/index.vue'
 import TablePage from '@components/TablePage/index.vue'
-import { onMounted, ref } from 'vue'
-import { queryArticles } from '@api/article'
+import { onMounted, ref, reactive } from 'vue'
+import { queryArticles, publishArticle, unpublishArticle } from '@api/article'
 import { dictionary } from '@/utils/dictionary.ts'
+import { notifySuccess, notifyWarning } from '@utils/notify'
 
-const operateOptions = ref([
+/**
+ * 默认操作栏操作项配置
+ */
+const defaultActionOptions = ref([
   {
     label: '设置封面'
   },
   {
-    label: '发布'
-  },
-  {
-    label: '下架'
+    label: '预览'
   }
 ])
+
+/**
+ * 文章状态配置
+ */
+const articleStatusConfig = reactive({
+  // 已发布
+  PUBLISHED: {
+    // 表格状态标签显示类型
+    type: 'success',
+    // 操作栏操作项配置
+    actionOptions: [
+      {
+        label: '下架',
+        action: (articleId) => handleUnpublishArticle(articleId)
+      }
+    ]
+  },
+  // 未发布
+  UNPUBLISHED: {
+    type: 'info',
+    actionOptions: [
+      {
+        label: '发布',
+        action: (articleId) => handlePublishArticle(articleId)
+      }
+    ]
+  }
+})
+
+/**
+ * 获取文章状态标签显示类型
+ * @param row
+ */
+const getStatusTagType = (row: ApiArticle.QueryResponse) => {
+  if (row.status) {
+    return articleStatusConfig[row.status]?.type || 'info'
+  } else {
+    return 'info'
+  }
+}
+
+/**
+ * 根据每行数据内容获取对应的操作项
+ * @param row
+ */
+const getOperateOptions = (row: ApiArticle.QueryResponse) => {
+  let findConfig = articleStatusConfig[row.status]
+  let actionOptions = findConfig
+    ? defaultActionOptions.value.concat(findConfig.actionOptions)
+    : defaultActionOptions.value
+  return actionOptions.map((item) => ({
+    ...item,
+    row
+  }))
+}
 
 const initQueryForm = (): Partial<ApiArticle.QueryForm> => {
   return {
@@ -178,6 +245,40 @@ const handleChangePageSize = (pageSize: number) => {
   pagination.value.pageSize = pageSize
   fetchTableData()
 }
+
+/**
+ * 操作项按钮点击时间
+ * @param data
+ */
+const handleActionClick = (data) => {
+  if (data.itemData.action) {
+    data.itemData.action(data.itemData.row.articleId)
+  } else {
+    notifyWarning('操作项功能未配置')
+  }
+}
+
+/**
+ * 发布文章
+ * @param articleId
+ */
+const handlePublishArticle = (articleId: number) => {
+  publishArticle(articleId).then(() => {
+    notifySuccess('发布成功')
+    fetchTableData()
+  })
+}
+
+/**
+ * 下架文章
+ * @param articleId
+ */
+const handleUnpublishArticle = (articleId: number) => {
+  unpublishArticle(articleId).then(() => {
+    notifySuccess('下架成功')
+    fetchTableData()
+  })
+}
 </script>
 
 <style scoped lang="scss">
@@ -186,9 +287,11 @@ const handleChangePageSize = (pageSize: number) => {
   height: 100px;
 }
 .blog-tag {
-  margin-right: 5px;
+  margin-left: 5px;
+  margin-top: 5px;
 }
-.blog-tag:last-child {
-  margin-right: 0px;
+.blog-tag:first-child {
+  margin-left: 0px;
+  margin-top: 0px;
 }
 </style>

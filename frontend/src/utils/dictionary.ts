@@ -1,8 +1,7 @@
 export const dictionary: Dictionary = {
   articleStatus: {
-    DRAFT: '草稿',
     PUBLISHED: '已发布',
-    REMOVED: '已下架'
+    UNPUBLISHED: '未发布'
   },
   articleSource: {
     GIT_SYNC: 'Git同步'
