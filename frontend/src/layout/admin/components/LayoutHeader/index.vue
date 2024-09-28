@@ -1,10 +1,12 @@
 <template>
-  <div class="navbar">
-    <div class="left-sider">
+  <div
+    class="flex justify-between items-center h-full px-20px border-b border-solid border-gray-300"
+  >
+    <div class="flex gap-2">
       <IconApplication />
       <tiny-breadcrumb separator="/" :options="breadcrumboptions" />
     </div>
-    <ul class="right-sider">
+    <ul class="flex gap-2">
       <li>
         <tiny-user-head type="icon" round min></tiny-user-head>
       </li>
@@ -26,26 +28,4 @@ const breadcrumboptions = computed(() =>
 )
 </script>
 
-<style scoped lang="scss">
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  padding: 0 20px;
-  border-bottom: 1px solid #d8dae2;
-}
-
-.left-sider {
-  display: flex;
-  gap: 10px;
-}
-
-.right-sider {
-  display: flex;
-  li {
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+<style scoped lang="scss"></style>

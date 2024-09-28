@@ -1,10 +1,10 @@
 <template>
-  <div class="asider">
-    <div class="logo-contaner">
+  <div class="h-full border-solid border-r border-gray-300">
+    <div class="w-full h-60px flex items-center justify-center">
       <h2>simple-blog</h2>
     </div>
     <tiny-tree-menu
-      class="menu"
+      style="width: 200px"
       :data="menuData"
       :show-filter="false"
       accordion
@@ -65,21 +65,4 @@ const handleNodeClick = (node: any) => {
 }
 </script>
 
-<style scoped lang="scss">
-.asider {
-  height: 100%;
-  border-right: 1px solid #d8dae2;
-}
-.logo-contaner {
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.menu {
-  margin-top: 5px;
-  width: 200px;
-  background-color: #142031;
-}
-</style>
+<style scoped lang="scss"></style>
