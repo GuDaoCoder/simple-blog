@@ -4,12 +4,13 @@ import { ConfigEnv, defineConfig, loadEnv, UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import autoImportPlugin from '@opentiny/unplugin-tiny-vue'
+import WindiCSS from 'vite-plugin-windicss'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd())
   return {
-    plugins: [vue(), vueJsx(), autoImportPlugin('vite')],
+    plugins: [vue(), WindiCSS(), vueJsx(), autoImportPlugin('vite')],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)), // 源码根目录
