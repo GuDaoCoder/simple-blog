@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ContentCard: typeof import('./src/components/ContentCard/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchButtonGroup: typeof import('./src/components/SearchButtonGroup/index.vue')['default']
@@ -29,6 +30,7 @@ declare module 'vue' {
     TinyInput: typeof import('@opentiny/vue')['Input']
     TinyPager: typeof import('@opentiny/vue')['Pager']
     TinyRow: typeof import('@opentiny/vue')['Row']
+    TinyStatistic: typeof import('@opentiny/vue')['Statistic']
     TinySwitch: typeof import('@opentiny/vue')['Switch']
     TinyTabItem: typeof import('@opentiny/vue')['TabItem']
     TinyTabs: typeof import('@opentiny/vue')['Tabs']

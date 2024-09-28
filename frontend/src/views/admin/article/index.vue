@@ -1,127 +1,131 @@
 <template>
-  <tiny-form label-width="80px" label-position="right" @submit="fetchTableData">
-    <tiny-row flex>
-      <tiny-col :span="4">
-        <tiny-form-item label="文章Id">
-          <tiny-input v-model="queryForm.articleId" placeholder="请输入文章Id" />
-        </tiny-form-item>
-      </tiny-col>
-      <tiny-col :span="4">
-        <tiny-form-item label="标题">
-          <tiny-input v-model="queryForm.title" placeholder="请输入标题" />
-        </tiny-form-item>
-      </tiny-col>
-    </tiny-row>
-    <search-button-group>
-      <tiny-button type="primary" native-type="submit">查询</tiny-button>
-      <tiny-button type="info" @click="handleResetForm">重置</tiny-button>
-    </search-button-group>
-  </tiny-form>
-  <tiny-divider />
-  <tiny-grid
-    :data="tableData"
-    auto-resize
-    :border="true"
-    :stripe="true"
-    highlight-current-row
-    highlight-hover-row
-  >
-    <tiny-grid-column type="index" width="60" />
-    <tiny-grid-column title="封面" width="120px">
-      <template #default="data">
-        <tiny-image
-          class="cover-image"
-          src="https://res.hc-cdn.com/tiny-vue-web-doc/3.18.9.20240902190525/static/images/mountain.png"
-          fit="fit"
-          lazy
-        ></tiny-image>
-      </template>
-    </tiny-grid-column>
-    <tiny-grid-column
-      field="articleId"
-      title="文章Id"
-      show-overflow
-      show-header-tip
-      width="100px"
-    />
-    <tiny-grid-column field="title" title="标题" show-overflow show-header-tip width="180px" />
-    <tiny-grid-column field="summary" title="摘要" show-overflow show-header-tip />
-    <tiny-grid-column title="标签" show-overflow show-header-tip>
-      <template #default="data">
-        <!-- 宽度不够时自动换行 -->
-        <div style="white-space: normal">
-          <tiny-tag
-            class="blog-tag"
-            v-for="tag in data.row.tags"
-            :key="tag.tagId"
-            :value="tag.tagName"
-            :color="tag.color"
-            effect="dark"
-          />
-        </div>
-      </template>
-    </tiny-grid-column>
-    <tiny-grid-column field="status" title="状态" show-overflow show-header-tip width="80px">
-      <template #default="data">
-        <tiny-tag
-          effect="dark"
-          :type="getStatusTagType(data.row)"
-          :value="dictionary.articleStatus[data.row.status]"
-      /></template>
-    </tiny-grid-column>
-    <tiny-grid-column field="top" title="是否置顶" show-overflow show-header-tip width="80px">
-      <template #default="data">
-        <tiny-switch v-model="data.row.top" show-text disabled>
-          <template #open>
-            <span>是</span>
-          </template>
-          <template #close>
-            <span>否</span>
-          </template>
-        </tiny-switch>
-      </template>
-    </tiny-grid-column>
-    <tiny-grid-column
-      field="enableComment"
-      title="是否开启评论"
-      show-overflow
-      show-header-tip
-      width="100px"
-    >
-      <template #default="data">
-        <tiny-switch v-model="data.row.enableComment" show-text disabled>
-          <template #open>
-            <span>是</span>
-          </template>
-          <template #close>
-            <span>否</span>
-          </template>
-        </tiny-switch>
-      </template>
-    </tiny-grid-column>
-    <tiny-grid-column
-      field="createTime"
-      title="创建时间"
-      show-overflow
-      show-header-tip
-      width="160px"
-    />
-    <tiny-grid-column title="操作" fixed="right" width="150px">
-      <template #default="data">
-        <tiny-action-menu
-          :options="getOperateOptions(data.row)"
-          :max-show-num="3"
-          @item-click="handleActionClick"
-        />
-      </template>
-    </tiny-grid-column>
-  </tiny-grid>
+  <content-card>
+    <tiny-form label-width="80px" label-position="right" @submit="fetchTableData">
+      <tiny-row flex>
+        <tiny-col :span="4">
+          <tiny-form-item label="文章Id">
+            <tiny-input v-model="queryForm.articleId" placeholder="请输入文章Id" />
+          </tiny-form-item>
+        </tiny-col>
+        <tiny-col :span="4">
+          <tiny-form-item label="标题">
+            <tiny-input v-model="queryForm.title" placeholder="请输入标题" />
+          </tiny-form-item>
+        </tiny-col>
+      </tiny-row>
+      <search-button-group>
+        <tiny-button type="primary" native-type="submit">查询</tiny-button>
+        <tiny-button type="info" @click="handleResetForm">重置</tiny-button>
+      </search-button-group>
+    </tiny-form>
+  </content-card>
 
-  <table-page
-    :pagination="pagination"
-    @current-page-change="handleChangePageNumber"
-    @page-size-change="handleChangePageSize"
-  />
+  <content-card class="mt-4">
+    <tiny-grid
+      :data="tableData"
+      auto-resize
+      :border="true"
+      :stripe="true"
+      highlight-current-row
+      highlight-hover-row
+    >
+      <tiny-grid-column type="index" width="60" />
+      <tiny-grid-column title="封面" width="120px">
+        <template #default="data">
+          <tiny-image
+            class="cover-image"
+            src="https://res.hc-cdn.com/tiny-vue-web-doc/3.18.9.20240902190525/static/images/mountain.png"
+            fit="fit"
+            lazy
+          ></tiny-image>
+        </template>
+      </tiny-grid-column>
+      <tiny-grid-column
+        field="articleId"
+        title="文章Id"
+        show-overflow
+        show-header-tip
+        width="100px"
+      />
+      <tiny-grid-column field="title" title="标题" show-overflow show-header-tip width="180px" />
+      <tiny-grid-column field="summary" title="摘要" show-overflow show-header-tip />
+      <tiny-grid-column title="标签" show-overflow show-header-tip>
+        <template #default="data">
+          <!-- 宽度不够时自动换行 -->
+          <div style="white-space: normal">
+            <tiny-tag
+              class="blog-tag"
+              v-for="tag in data.row.tags"
+              :key="tag.tagId"
+              :value="tag.tagName"
+              :color="tag.color"
+              effect="dark"
+            />
+          </div>
+        </template>
+      </tiny-grid-column>
+      <tiny-grid-column field="status" title="状态" show-overflow show-header-tip width="80px">
+        <template #default="data">
+          <tiny-tag
+            effect="dark"
+            :type="getStatusTagType(data.row)"
+            :value="dictionary.articleStatus[data.row.status]"
+        /></template>
+      </tiny-grid-column>
+      <tiny-grid-column field="top" title="是否置顶" show-overflow show-header-tip width="80px">
+        <template #default="data">
+          <tiny-switch v-model="data.row.top" show-text disabled>
+            <template #open>
+              <span>是</span>
+            </template>
+            <template #close>
+              <span>否</span>
+            </template>
+          </tiny-switch>
+        </template>
+      </tiny-grid-column>
+      <tiny-grid-column
+        field="enableComment"
+        title="是否开启评论"
+        show-overflow
+        show-header-tip
+        width="100px"
+      >
+        <template #default="data">
+          <tiny-switch v-model="data.row.enableComment" show-text disabled>
+            <template #open>
+              <span>是</span>
+            </template>
+            <template #close>
+              <span>否</span>
+            </template>
+          </tiny-switch>
+        </template>
+      </tiny-grid-column>
+      <tiny-grid-column
+        field="createTime"
+        title="创建时间"
+        show-overflow
+        show-header-tip
+        width="160px"
+      />
+      <tiny-grid-column title="操作" fixed="right" width="150px">
+        <template #default="data">
+          <tiny-action-menu
+            :options="getOperateOptions(data.row)"
+            :max-show-num="3"
+            @item-click="handleActionClick"
+          />
+        </template>
+      </tiny-grid-column>
+    </tiny-grid>
+
+    <table-page
+      :pagination="pagination"
+      @current-page-change="handleChangePageNumber"
+      @page-size-change="handleChangePageSize"
+    />
+  </content-card>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <content-card>
     <tiny-form label-width="80px" label-position="right" @submit="fetchTableData">
       <tiny-row flex>
         <tiny-col :span="4">
@@ -13,7 +13,8 @@
         <tiny-button type="info" @click="handleResetForm">重置</tiny-button>
       </search-button-group>
     </tiny-form>
-    <tiny-divider />
+  </content-card>
+  <content-card class="mt-4">
     <tiny-grid
       :data="tableData"
       auto-resize
@@ -36,7 +37,7 @@
       @current-page-change="handleChangePageNumber"
       @page-size-change="handleChangePageSize"
     />
-  </div>
+  </content-card>
 </template>
 
 <script setup lang="ts">
