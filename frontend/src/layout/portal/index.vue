@@ -2,7 +2,7 @@
   <tiny-container pattern="classic">
     <layout-main />
     <template #header>
-      <layout-header />
+      <layout-header class="h-60px shadow-md" />
     </template>
     <template #footer>
       <layout-footer />
@@ -16,4 +16,8 @@ import LayoutMain from './components/LayoutMain/index.vue'
 import LayoutFooter from './components/LayoutFooter/index.vue'
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+:deep(.tiny-container__main) {
+  background-color: #f1f2f5;
+}
+</style>

@@ -1,7 +1,11 @@
 <template>
-  <div>首页</div>
+  <div>
+    <article-carousel />
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ArticleCarousel from '../carousel/index.vue'
+</script>
 
 <style scoped></style>
