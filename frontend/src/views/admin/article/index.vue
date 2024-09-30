@@ -33,8 +33,9 @@
       <tiny-grid-column title="封面" width="120px">
         <template #default="data">
           <tiny-image
+            v-if="data.row.coverImageUrl"
             class="cover-image"
-            src="https://res.hc-cdn.com/tiny-vue-web-doc/3.18.9.20240902190525/static/images/mountain.png"
+            :src="data.row.coverImageUrl"
             fit="fit"
             lazy
           ></tiny-image>
@@ -126,14 +127,27 @@
       @page-size-change="handleChangePageSize"
     />
   </content-card>
+
+  <upload-image
+    :visible="uploadImageVisible"
+    title="文章封面上传"
+    module="COVER_IMAGE"
+    @upload-success="handleUploadCoverImageSuccess"
+    @close="handleUploadImageClose"
+  />
 </template>
 
 <script setup lang="ts">
 import SearchButtonGroup from '@components/SearchButtonGroup/index.vue'
 import TablePage from '@components/TablePage/index.vue'
 import { onMounted, ref, reactive } from 'vue'
-import { queryArticles, publishArticle, unpublishArticle } from '@api/article'
-import { dictionary } from '@/utils/dictionary.ts'
+import {
+  queryArticles,
+  publishArticle,
+  unpublishArticle,
+  updateArticleCoverImage
+} from '@api/article'
+import { dictionary } from '@/utils/dictionary'
 import { notifySuccess, notifyWarning } from '@utils/notify'
 
 /**
@@ -141,7 +155,8 @@ import { notifySuccess, notifyWarning } from '@utils/notify'
  */
 const defaultActionOptions = ref([
   {
-    label: '设置封面'
+    label: '设置封面',
+    action: (articleId: number) => handleUploadCoverImage(articleId)
   },
   {
     label: '预览'
@@ -160,7 +175,7 @@ const articleStatusConfig = reactive({
     actionOptions: [
       {
         label: '下架',
-        action: (articleId) => handleUnpublishArticle(articleId)
+        action: (articleId: number) => handleUnpublishArticle(articleId)
       }
     ]
   },
@@ -170,7 +185,7 @@ const articleStatusConfig = reactive({
     actionOptions: [
       {
         label: '发布',
-        action: (articleId) => handlePublishArticle(articleId)
+        action: (articleId: number) => handlePublishArticle(articleId)
       }
     ]
   }
@@ -205,7 +220,7 @@ const getOperateOptions = (row: ApiArticle.QueryResponse) => {
 
 const initQueryForm = (): Partial<ApiArticle.QueryForm> => {
   return {
-    tagName: ''
+    title: ''
   }
 }
 
@@ -254,12 +269,46 @@ const handleChangePageSize = (pageSize: number) => {
  * 操作项按钮点击时间
  * @param data
  */
-const handleActionClick = (data) => {
+const handleActionClick = (data: any) => {
   if (data.itemData.action) {
     data.itemData.action(data.itemData.row.articleId)
   } else {
     notifyWarning('操作项功能未配置')
   }
+}
+
+const uploadImageVisible = ref(false)
+const choosedArticleId = ref<number>(0)
+/**
+ * 上传封面
+ * @param articleId
+ */
+const handleUploadCoverImage = (articleId: number) => {
+  choosedArticleId.value = articleId
+  uploadImageVisible.value = true
+}
+
+/**
+ * 上传封面成功
+ * @param data
+ */
+const handleUploadCoverImageSuccess = (data: ApiCommon.Result<ApiAttachment.UploadResponse>) => {
+  updateArticleCoverImage(choosedArticleId.value, data.data.url)
+    .then(() => {
+      notifySuccess('封面更新成功')
+      fetchTableData()
+    })
+    .finally(() => {
+      choosedArticleId.value = 0
+      uploadImageVisible.value = false
+    })
+}
+
+/**
+ * 关闭上传封面弹窗
+ */
+const handleUploadImageClose = () => {
+  uploadImageVisible.value = false
 }
 
 /**

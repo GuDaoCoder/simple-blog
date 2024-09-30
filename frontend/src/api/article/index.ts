@@ -10,6 +10,16 @@ export const queryArticles = (params: ApiArticle.QueryRequest) => {
 }
 
 /**
+ * 设置文章封面
+ * @param articleId
+ * @param coverImageUrl
+ * @returns
+ */
+export const updateArticleCoverImage = (articleId: number, coverImageUrl: string) => {
+  return patch(`/admin/articles/${articleId}/updateCoverImage`, { coverImageUrl })
+}
+
+/**
  * 发布文章
  * @param articleId
  * @returns

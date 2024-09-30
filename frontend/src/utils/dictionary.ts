@@ -1,4 +1,4 @@
-export const dictionary: Dictionary = {
+export const dictionary = {
   articleStatus: {
     PUBLISHED: '已发布',
     UNPUBLISHED: '未发布'

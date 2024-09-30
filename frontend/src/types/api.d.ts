@@ -162,7 +162,7 @@ declare namespace ApiArticle {
     /**
      * 状态
      */
-    status: 'DRAFT' | 'PUBLISHED' | 'REMOVED'
+    status: 'PUBLISHED' | 'UNPUBLISHED'
     /**
      * 文章来源
      */
@@ -191,11 +191,11 @@ declare namespace ApiArticle {
     /**
      * 封面图片链接
      */
-    coverPictureUrl: string
+    coverImageUrl: string
     /**
      * 状态
      */
-    status: 'DRAFT' | 'PUBLISHED' | 'REMOVED'
+    status: 'PUBLISHED' | 'UNPUBLISHED'
     /**
      * 文章来源
      */
@@ -236,5 +236,61 @@ declare namespace ApiArticle {
      * 标签信息
      */
     tags: ApiTag.QueryResponse[]
+  }
+}
+
+/**
+ * 附件
+ */
+declare namespace ApiAttachment {
+  interface UploadResponse {
+    /**
+     * 附件id
+     */
+    attachmentId: number
+    /**
+     * 文件原名称
+     */
+    originalName: string
+    /**
+     * 附件存储名称
+     */
+    storageName: string
+    /**
+     * 扩展名
+     */
+    extension: string
+    /**
+     * 附件路径
+     */
+    path: string
+    /**
+     * 文件大小
+     */
+    size: number
+    /**
+     * 存储策略
+     */
+    storagePolicy: 'LOCAL'
+    /**
+     * 文件hash值
+     */
+    fileHash: string
+    /**
+     * 所属模块
+     */
+    module: 'IMAGE_BED' | 'COVER_IMAGE'
+    /**
+     * 创建时间
+     */
+    createTime: string
+    /**
+     * 更新时间
+     */
+    updateTime: string
+    /**
+     * 访问地址
+     */
+    url: string
   }
 }
