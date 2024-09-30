@@ -94,8 +94,4 @@ const handleChangePageSize = (pageSize: number) => {
 }
 </script>
 
-<style scoped lang="scss">
-:deep(.tiny-grid-cell) {
-  line-height: 42px;
-}
-</style>
+<style scoped lang="scss"></style>
