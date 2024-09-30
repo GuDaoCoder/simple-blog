@@ -86,4 +86,8 @@ public class AttachmentEntity extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private AttachmentModule module;
 
+	public String getFullStorageName() {
+		return storageName + "." + extension;
+	}
+
 }

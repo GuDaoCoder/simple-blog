@@ -1,7 +1,10 @@
 package com.blog.biz.enums;
 
+import com.blog.biz.model.config.LocalStoragePolicyConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.function.Function;
 
 /**
  * 附件所属模块
@@ -13,10 +16,12 @@ import lombok.Getter;
 @Getter
 public enum AttachmentModule {
 
-	PICTURE_BED("图床"),
+	PICTURE_BED("图床", LocalStoragePolicyConfig::getFullMarkdownImagePath),
 
-	COVER_PICTURE("封面"),;
+	COVER_PICTURE("封面", LocalStoragePolicyConfig::getFullCoverImagePath),;
 
 	private final String label;
+
+	private final Function<LocalStoragePolicyConfig, String> localPathSupplier;
 
 }

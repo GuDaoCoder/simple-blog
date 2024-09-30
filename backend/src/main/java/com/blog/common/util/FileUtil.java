@@ -1,6 +1,7 @@
 package com.blog.common.util;
 
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
@@ -18,6 +19,16 @@ public class FileUtil {
 	public static long getFileKbSize(File file) {
 		Assert.notNull(file, "The file cannot be null");
 		return (file.length() + 1023) / 1024;
+	}
+
+	/**
+	 * 获取文件大小，单位KB
+	 * @param file
+	 * @return long
+	 **/
+	public static long getFileKbSize(MultipartFile file) {
+		Assert.notNull(file, "The file cannot be null");
+		return file.getSize() / 1024;
 	}
 
 	/**

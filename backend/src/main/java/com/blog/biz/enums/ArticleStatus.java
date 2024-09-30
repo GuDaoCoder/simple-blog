@@ -10,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ArticleStatus {
-	
+
 	PUBLISHED("已发布"),
 
 	UNPUBLISHED("未发布"),;

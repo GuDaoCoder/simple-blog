@@ -2,6 +2,7 @@ package com.blog.biz.mapper;
 
 import com.blog.biz.model.entity.AttachmentEntity;
 import com.blog.biz.model.response.AttachmentResponse;
+import com.blog.biz.model.response.AttachmentUploadResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
@@ -16,5 +17,7 @@ public interface AttachmentMapper {
 	AttachmentMapper INSTANCE = Mappers.getMapper(AttachmentMapper.class);
 
 	AttachmentResponse toResponse(AttachmentEntity entity);
+
+	AttachmentUploadResponse toUploadResponse(AttachmentEntity entity);
 
 }

@@ -21,8 +21,15 @@ public class LocalStoragePolicyConfig {
 	@ConfigProperty(desc = "markdown图片存储路径")
 	private String markdownImagePath;
 
-	public String getMarkdownImageFullPath() {
+	@ConfigProperty(desc = "封面图片存储路径")
+	private String coverImagePath;
+
+	public String getFullMarkdownImagePath() {
 		return this.getBasePath() + this.getMarkdownImagePath();
+	}
+
+	public String getFullCoverImagePath() {
+		return this.getBasePath() + this.getCoverImagePath();
 	}
 
 }

@@ -1,11 +1,13 @@
 package com.blog.biz.service;
 
-import com.blog.biz.model.entity.AttachmentEntity;
 import com.blog.biz.model.request.AttachmentQueryRequest;
+import com.blog.biz.model.request.AttachmentUploadRequest;
 import com.blog.biz.model.response.AttachmentResponse;
+import com.blog.biz.model.response.AttachmentUploadResponse;
 import com.blog.common.base.PageResponse;
-
-import java.util.Optional;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Gudao
@@ -21,17 +23,19 @@ public interface AttachmentService {
 	PageResponse<AttachmentResponse> query(AttachmentQueryRequest request);
 
 	/**
-	 * 根据附件存储名称查询附件信息
-	 * @param storageName
-	 * @return Optional<AttachmentEntity>
+	 * 上传文件
+	 * @param file
+	 * @param request
+	 * @return AttachmentUploadResponse
 	 **/
-	Optional<AttachmentEntity> findByStorageName(String storageName);
+	AttachmentUploadResponse upload(@RequestParam("file") MultipartFile file, AttachmentUploadRequest request);
 
 	/**
-	 * 新增或更新附件信息
-	 * @param attachmentEntity
+	 * 下载文件
+	 * @param fullStorageName
+	 * @param httpServletResponse
 	 * @return void
 	 **/
-	void saveOrUpdate(AttachmentEntity attachmentEntity);
+	void download(String fullStorageName, HttpServletResponse httpServletResponse);
 
 }

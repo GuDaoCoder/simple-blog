@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * @author Gudao
  * @since 2024/8/16
@@ -13,6 +15,6 @@ import org.springframework.stereotype.Repository;
 public interface AttachmentRepository
 		extends JpaRepository<AttachmentEntity, Long>, JpaSpecificationExecutor<AttachmentEntity> {
 
-	AttachmentEntity findByStorageName(String storageName);
+	Optional<AttachmentEntity> findByStorageName(String storageName);
 
 }
