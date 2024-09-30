@@ -7,6 +7,7 @@ import com.blog.biz.model.entity.ArticleContentEntity;
 import com.blog.biz.model.entity.ArticleEntity;
 import com.blog.biz.model.entity.ArticleTagEntity;
 import com.blog.biz.model.entity.TagEntity;
+import com.blog.biz.model.request.ArticleCoverImageUrlRequest;
 import com.blog.biz.model.request.ArticleQueryRequest;
 import com.blog.biz.model.response.ArticleDetailResponse;
 import com.blog.biz.repository.ArticleContentRepository;
@@ -111,6 +112,14 @@ public class ArticleServiceImpl implements ArticleService {
 		return Optional.ofNullable(articleContentRepository.findByArticleId(articleId))
 			.map(ArticleContentEntity::getContent)
 			.orElse(null);
+	}
+
+	@Override
+	public void updateCoverImage(Long articleId, ArticleCoverImageUrlRequest request) {
+		ArticleEntity articleEntity = articleRepository.findById(articleId)
+			.orElseThrow(() -> new DataNotFoundException("文章不存在或已被删除"));
+		articleEntity.setCoverImageUrl(request.getCoverImageUrl());
+		articleRepository.save(articleEntity);
 	}
 
 	@Override

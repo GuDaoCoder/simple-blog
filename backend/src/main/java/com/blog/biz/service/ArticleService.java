@@ -1,5 +1,6 @@
 package com.blog.biz.service;
 
+import com.blog.biz.model.request.ArticleCoverImageUrlRequest;
 import com.blog.biz.model.request.ArticleQueryRequest;
 import com.blog.biz.model.response.ArticleDetailResponse;
 import com.blog.common.base.PageResponse;
@@ -23,6 +24,14 @@ public interface ArticleService {
 	 * @return String
 	 **/
 	String getContent(Long articleId);
+
+	/**
+	 * 设置文章封面
+	 * @param articleId
+	 * @param request
+	 * @return void
+	 **/
+	void updateCoverImage(Long articleId, ArticleCoverImageUrlRequest request);
 
 	/**
 	 * 发布文章

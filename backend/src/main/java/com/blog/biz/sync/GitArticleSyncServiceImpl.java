@@ -193,7 +193,7 @@ public class GitArticleSyncServiceImpl implements ArticleSyncService {
 			}
 			articleEntity.setFileHash(parsedFileHash)
 				.setSummary(getSummary(mdContext.getSummary()))
-				.setCoverPictureUrl(mdContext.getCoverPictureUrl())
+				.setCoverImageUrl(mdContext.getCoverImageUrl())
 				.setCategoryId(parsedCategoryId);
 
 			articleContentEntity = articleContentRepository.findByArticleId(articleEntity.getArticleId());
@@ -204,7 +204,7 @@ public class GitArticleSyncServiceImpl implements ArticleSyncService {
 			articleEntity = new ArticleEntity();
 			articleEntity.setTitle(mdContext.getTitle())
 				.setSummary(getSummary(mdContext.getSummary()))
-				.setCoverPictureUrl(mdContext.getCoverPictureUrl())
+				.setCoverImageUrl(mdContext.getCoverImageUrl())
 				.setFileHash(parsedFileHash)
 				.setSource(ArticleSource.GIT_SYNC)
 				.setStatus(ArticleStatus.UNPUBLISHED)

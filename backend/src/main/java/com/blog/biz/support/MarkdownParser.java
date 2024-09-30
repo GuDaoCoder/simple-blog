@@ -342,8 +342,8 @@ public class MarkdownParser {
 			return Optional.ofNullable(extra).map(Extra::getTags).orElse(new ArrayList<>());
 		}
 
-		public String getCoverPictureUrl() {
-			return Optional.ofNullable(extra).map(Extra::getCoverPictureUrl).orElse(null);
+		public String getCoverImageUrl() {
+			return Optional.ofNullable(extra).map(Extra::getCoverImageUrl).orElse(null);
 		}
 
 	}
@@ -374,7 +374,7 @@ public class MarkdownParser {
 		/**
 		 * 封面图片
 		 */
-		private String coverPictureUrl;
+		private String coverImageUrl;
 
 		/**
 		 * 标签

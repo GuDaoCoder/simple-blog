@@ -1,6 +1,7 @@
 package com.blog.biz.controller.admin;
 
 import com.blog.biz.constant.CommonConstants;
+import com.blog.biz.model.request.ArticleCoverImageUrlRequest;
 import com.blog.biz.model.request.ArticleQueryRequest;
 import com.blog.biz.model.response.ArticleDetailResponse;
 import com.blog.biz.model.response.ArticleResponse;
@@ -38,6 +39,14 @@ public class ArticleController {
 	@GetMapping("/{articleId}/content")
 	public R<String> getContent(@Parameter(description = "文章Id") @PathVariable("articleId") Long articleId) {
 		return R.success(articleService.getContent(articleId));
+	}
+
+	@Operation(summary = "设置文章封面")
+	@PatchMapping("/{articleId}/updateCoverImage")
+	public R<Void> updateCoverImage(@Parameter(description = "文章Id") @PathVariable("articleId") Long articleId,
+			@RequestBody ArticleCoverImageUrlRequest request) {
+		articleService.updateCoverImage(articleId, request);
+		return R.success();
 	}
 
 	@Operation(summary = "发布文章")

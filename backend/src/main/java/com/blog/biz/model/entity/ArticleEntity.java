@@ -51,7 +51,7 @@ public class ArticleEntity extends BaseEntity {
 	 * 封面图片链接
 	 */
 	@Column(length = 256)
-	private String coverPictureUrl;
+	private String coverImageUrl;
 
 	/**
 	 * 状态

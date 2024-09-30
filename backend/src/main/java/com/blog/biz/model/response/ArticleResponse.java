@@ -27,7 +27,7 @@ public class ArticleResponse {
 	private String summary;
 
 	@Schema(description = "封面图片链接")
-	private String coverPictureUrl;
+	private String coverImageUrl;
 
 	@Schema(description = "状态")
 	private ArticleStatus status;
