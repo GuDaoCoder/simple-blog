@@ -34,8 +34,9 @@
         <template #default="data">
           <tiny-image
             v-if="data.row.coverImageUrl"
-            class="cover-image"
+            class="h-100px w-100px"
             :src="data.row.coverImageUrl"
+            :preview-src-list="[data.row.coverImageUrl]"
             fit="fit"
             lazy
           ></tiny-image>
@@ -53,9 +54,8 @@
       <tiny-grid-column title="标签" show-overflow show-header-tip>
         <template #default="data">
           <!-- 宽度不够时自动换行 -->
-          <div style="white-space: normal">
+          <div class="flex flex-wrap gap-[5px]">
             <tiny-tag
-              class="blog-tag"
               v-for="tag in data.row.tags"
               :key="tag.tagId"
               :value="tag.tagName"
@@ -334,17 +334,4 @@ const handleUnpublishArticle = (articleId: number) => {
 }
 </script>
 
-<style scoped lang="scss">
-.cover-image {
-  width: 100px;
-  height: 100px;
-}
-.blog-tag {
-  margin-left: 5px;
-  margin-top: 5px;
-}
-.blog-tag:first-child {
-  margin-left: 0px;
-  margin-top: 0px;
-}
-</style>
+<style scoped lang="scss"></style>
