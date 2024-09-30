@@ -1,10 +1,10 @@
 <template>
-  <div class="h-full border-solid border-r border-gray-300">
+  <div class="h-full border-solid border-r-1px">
     <div class="w-full h-60px flex items-center justify-center">
       <h2>simple-blog</h2>
     </div>
     <tiny-tree-menu
-      style="width: 200px"
+      style="width: 199px"
       :data="menuData"
       :show-filter="false"
       accordion
