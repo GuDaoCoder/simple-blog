@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { allRoutes } from './routes'
+import { adminRoutes, portalRoutes } from './routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [...allRoutes]
+  routes: [...adminRoutes, ...portalRoutes]
 })
 
 export default router

@@ -9,8 +9,9 @@ export type Component<T = any> =
 
 declare module 'vue-router' {
   export interface RouteMeta {
+    order?: number
     title: string
-    icon?: string
+    icon?: Component
   }
 }
 

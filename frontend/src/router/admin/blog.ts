@@ -1,4 +1,5 @@
 import type { RouteRaw } from '../type'
+import { IconDocument } from '@opentiny/vue-icon'
 
 const BLOG: RouteRaw = {
   path: '/blog',
@@ -6,7 +7,9 @@ const BLOG: RouteRaw = {
   redirect: '/admin/article',
   component: () => import('@layout/admin/index.vue'),
   meta: {
-    title: '博客管理'
+    order: 2,
+    title: '博客管理',
+    icon: IconDocument()
   },
   children: [
     {

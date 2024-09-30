@@ -13,7 +13,5 @@ function formatModules(_modules: any, result: RouteRecordNormalized[]) {
   return result
 }
 
-export const allRoutes: RouteRecordNormalized[] = [
-  ...formatModules(adminModules, []),
-  ...formatModules(portalModules, [])
-]
+export const adminRoutes: RouteRecordNormalized[] = formatModules(adminModules, [])
+export const portalRoutes: RouteRecordNormalized[] = formatModules(portalModules, [])
