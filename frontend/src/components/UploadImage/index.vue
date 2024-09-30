@@ -35,9 +35,9 @@
 <script setup lang="ts">
 import { iconFileupload } from '@opentiny/vue-icon'
 import { ref } from 'vue'
-import { notifyError, notifySuccess, notifyWarning } from '@utils/notify'
+import { notifyError, notifySuccess } from '@utils/notify'
 
-const props = defineProps({
+defineProps({
   visible: {
     type: Boolean,
     required: true
