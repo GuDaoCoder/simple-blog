@@ -366,7 +366,7 @@ public class GitArticleSyncServiceImpl implements ArticleSyncService {
 						File imageFile = new File(file.getParentFile(), originalImageUrl);
 						if (imageFile.exists()) {
 							AttachmentEntity attachmentEntity = fileFactory.getFileHandler()
-								.upload(imageFile, AttachmentModule.PICTURE_BED);
+								.upload(imageFile, AttachmentModule.IMAGE_BED);
 							return attachmentEntity.getPath();
 						}
 					}

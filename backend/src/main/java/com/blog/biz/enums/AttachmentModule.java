@@ -16,9 +16,9 @@ import java.util.function.Function;
 @Getter
 public enum AttachmentModule {
 
-	PICTURE_BED("图床", LocalStoragePolicyConfig::getFullMarkdownImagePath),
+	IMAGE_BED("图床", LocalStoragePolicyConfig::getFullMarkdownImagePath),
 
-	COVER_PICTURE("封面", LocalStoragePolicyConfig::getFullCoverImagePath),;
+	COVER_IMAGE("封面", LocalStoragePolicyConfig::getFullCoverImagePath),;
 
 	private final String label;
 
