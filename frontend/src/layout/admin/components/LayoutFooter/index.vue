@@ -1,14 +1,7 @@
 <template>
-  <div class="footer">simple-blog</div>
+  <div class="text-center leading-15">simple-blog</div>
 </template>
 
 <script setup lang="ts"></script>
 
-<style scoped lang="scss">
-.footer {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+<style scoped lang="scss"></style>
