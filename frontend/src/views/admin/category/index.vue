@@ -1,41 +1,42 @@
 <template>
   <content-card>
-    <tiny-form label-width="80px" label-position="right" @submit="fetchTableData">
-      <tiny-row flex>
-        <tiny-col :span="4">
-          <tiny-form-item label="分类名称">
-            <tiny-input v-model="queryForm.categoryName" placeholder="请输入分类名称"></tiny-input>
-          </tiny-form-item>
-        </tiny-col>
-      </tiny-row>
+    <a-form :model="queryForm" @submit="handleFetchTableData">
+      <a-row :gutter="16">
+        <a-col :span="8">
+          <a-form-item label="分类名称">
+            <a-input v-model="queryForm.categoryName" placeholder="分类名称" allow-clear />
+          </a-form-item>
+        </a-col>
+      </a-row>
       <search-button-group>
-        <tiny-button type="primary" native-type="submit">查询</tiny-button>
-        <tiny-button type="info" @click="handleResetForm">重置</tiny-button>
+        <a-button html-type="submit" type="primary">查询</a-button>
+        <a-button type="outline" @click="handleResetForm">重置</a-button>
       </search-button-group>
-    </tiny-form>
+    </a-form>
   </content-card>
 
   <content-card class="mt-4">
-    <tiny-grid
+    <a-table
+      :columns="tableColumns"
       :data="tableData"
-      auto-resize
-      :border="true"
-      :stripe="true"
-      highlight-current-row
-      highlight-hover-row
-      :tree-config="{ children: 'children' }"
+      :loading="tableLoading"
+      :pagination="false"
+      column-resizable
+      hide-expand-button-on-empty
+      row-key="categoryId"
+      stripe
     >
-      <tiny-grid-column type="index" width="60" />
-      <tiny-grid-column field="categoryName" title="分类名称" tree-node />
-      <tiny-grid-column field="articleCount" title="文章数量" />
-      <tiny-grid-column field="createTime" title="创建时间" />
-    </tiny-grid>
+      <template #articleCount="{ record }">
+        {{ handleTotalCount(record) }}
+      </template>
+    </a-table>
   </content-card>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { treeCategories } from '@api/category/index'
+import { treeCategories } from '@api/category'
+import SearchButtonGroup from '@components/SearchButtonGroup/index.vue'
+import type { TableColumnData } from '@arco-design/web-vue'
 
 const initQueryForm = (): Partial<ApiCategory.QueryForm> => {
   return {
@@ -47,22 +48,52 @@ const queryForm = ref<Partial<ApiCategory.QueryForm>>(initQueryForm())
 
 const tableData = ref<ApiCategory.QueryResponse[]>([])
 
+const tableColumns = ref<TableColumnData[]>([
+  {
+    title: '分类名称',
+    dataIndex: 'categoryName'
+  },
+  {
+    title: '文章数量',
+    dataIndex: 'articleCount',
+    slotName: 'articleCount'
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createTime'
+  }
+])
+
 onMounted(() => {
-  fetchTableData()
+  handleFetchTableData()
 })
 
-const fetchTableData = () => {
+const tableLoading = ref(false)
+const handleFetchTableData = () => {
   let params = {
     ...queryForm.value
   }
-  treeCategories(params).then((res) => {
-    tableData.value = res
-  })
+  tableLoading.value = true
+  treeCategories(params)
+    .then((res) => {
+      tableData.value = res
+    })
+    .finally(() => (tableLoading.value = false))
 }
 
 const handleResetForm = () => {
   queryForm.value = initQueryForm()
-  fetchTableData()
+  handleFetchTableData()
+}
+
+const handleTotalCount = (record: ApiCategory.QueryResponse): number => {
+  let count = record.articleCount || 0
+  if (record.children && record.children.length > 0) {
+    record.children.forEach((item) => {
+      count += handleTotalCount(item)
+    })
+  }
+  return count
 }
 </script>
 
