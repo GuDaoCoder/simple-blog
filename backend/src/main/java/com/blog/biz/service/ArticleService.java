@@ -1,6 +1,7 @@
 package com.blog.biz.service;
 
 import com.blog.biz.model.request.ArticleCoverImageUrlRequest;
+import com.blog.biz.model.request.ArticlePortalQueryRequest;
 import com.blog.biz.model.request.ArticleQueryRequest;
 import com.blog.biz.model.response.ArticleDetailResponse;
 import com.blog.common.base.PageResponse;
@@ -45,6 +46,13 @@ public interface ArticleService {
 	 * @param articleId
 	 * @return void
 	 **/
-	void unpublish(Long articleId);
+	void unPublish(Long articleId);
+
+	/**
+	 * 门户查询文章
+	 * @param request
+	 * @return PageResponse<ArticleDetailResponse>
+	 **/
+	PageResponse<ArticleDetailResponse> portalQuery(ArticlePortalQueryRequest request);
 
 }

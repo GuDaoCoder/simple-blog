@@ -2,6 +2,7 @@ package com.blog.biz.mapper;
 
 import com.blog.biz.model.entity.CategoryEntity;
 import com.blog.biz.model.response.CategoryNodeResponse;
+import com.blog.biz.model.response.CategoryResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
@@ -16,5 +17,7 @@ public interface CategoryMapper {
 	CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 
 	CategoryNodeResponse toNodeResponse(CategoryEntity entity);
+
+	CategoryResponse toResponse(CategoryEntity entity);
 
 }

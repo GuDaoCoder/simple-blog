@@ -92,7 +92,7 @@ public class ArticleEntity extends BaseEntity {
 	/**
 	 * 下架时间
 	 */
-	private LocalDateTime unpublishTime;
+	private LocalDateTime unPublishTime;
 
 	/**
 	 * 文件hash值

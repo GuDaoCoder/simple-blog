@@ -57,9 +57,9 @@ public class ArticleController {
 	}
 
 	@Operation(summary = "下架文章")
-	@PatchMapping("/{articleId}/unpublish")
-	public R<Void> unpublish(@Parameter(description = "文章Id") @PathVariable("articleId") Long articleId) {
-		articleService.unpublish(articleId);
+	@PatchMapping("/{articleId}/unPublish")
+	public R<Void> unPublish(@Parameter(description = "文章Id") @PathVariable("articleId") Long articleId) {
+		articleService.unPublish(articleId);
 		return R.success();
 	}
 

@@ -35,20 +35,19 @@ public class ArticleResponse {
 	@Schema(description = "文章来源")
 	private ArticleSource source;
 
-	@Schema(description = "所属分类Id")
-	private Long categoryId;
-
 	@Schema(description = "是否置顶")
 	private Boolean top;
 
 	@Schema(description = "是否开启评论")
 	private Boolean enableComment;
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Schema(description = "发布时间")
 	private LocalDateTime publishTime;
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Schema(description = "下架时间")
-	private LocalDateTime unpublishTime;
+	private LocalDateTime unPublishTime;
 
 	@Schema(description = "文件hash值")
 	private String fileHash;

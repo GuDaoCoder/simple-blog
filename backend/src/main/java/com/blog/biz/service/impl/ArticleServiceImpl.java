@@ -2,33 +2,28 @@ package com.blog.biz.service.impl;
 
 import com.blog.biz.enums.ArticleStatus;
 import com.blog.biz.mapper.ArticleMapper;
+import com.blog.biz.mapper.CategoryMapper;
 import com.blog.biz.mapper.TagMapper;
-import com.blog.biz.model.entity.ArticleContentEntity;
-import com.blog.biz.model.entity.ArticleEntity;
-import com.blog.biz.model.entity.ArticleTagEntity;
-import com.blog.biz.model.entity.TagEntity;
+import com.blog.biz.model.entity.*;
 import com.blog.biz.model.request.ArticleCoverImageUrlRequest;
+import com.blog.biz.model.request.ArticlePortalQueryRequest;
 import com.blog.biz.model.request.ArticleQueryRequest;
 import com.blog.biz.model.response.ArticleDetailResponse;
-import com.blog.biz.repository.ArticleContentRepository;
-import com.blog.biz.repository.ArticleRepository;
-import com.blog.biz.repository.ArticleTagRepository;
-import com.blog.biz.repository.TagRepository;
+import com.blog.biz.repository.*;
 import com.blog.biz.service.ArticleService;
 import com.blog.common.base.PageResponse;
 import com.blog.common.exception.BusinessException;
 import com.blog.common.exception.DataNotFoundException;
 import com.blog.common.jpa.query.QuerySpecificationBuilder;
+import com.blog.common.util.DateTimeUtil;
 import com.blog.common.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +42,8 @@ public class ArticleServiceImpl implements ArticleService {
 
 	private final TagRepository tagRepository;
 
+	private final CategoryRepository categoryRepository;
+
 	@Override
 	public PageResponse<ArticleDetailResponse> query(ArticleQueryRequest request) {
 		Page<ArticleEntity> page = articleRepository.findAll(QuerySpecificationBuilder.build(request),
@@ -63,29 +60,34 @@ public class ArticleServiceImpl implements ArticleService {
 		if (CollectionUtils.isEmpty(articleEntities)) {
 			return List.of();
 		}
-		Map<Long, List<TagEntity>> articleTagMap = geArticleTagRelations(articleEntities);
+		Map<Long, List<TagEntity>> articleTagRelation = geArticleTagRelations(
+				articleEntities.stream().map(ArticleEntity::getArticleId).collect(Collectors.toSet()));
+
+		Map<Long, CategoryEntity> categoryRelation = getCategoryRelation(articleEntities.stream()
+			.map(ArticleEntity::getCategoryId)
+			.filter(Objects::nonNull)
+			.collect(Collectors.toSet()));
 
 		return articleEntities.stream().map(entity -> {
 			ArticleDetailResponse detailResponse = ArticleMapper.INSTANCE.toDetailResponse(entity);
-			detailResponse.setTags(articleTagMap.getOrDefault(entity.getArticleId(), List.of())
-				.stream()
-				.map(TagMapper.INSTANCE::toResponse)
-				.toList());
+			detailResponse.setCategory(CategoryMapper.INSTANCE.toResponse(categoryRelation.get(entity.getCategoryId())))
+				.setTags(articleTagRelation.getOrDefault(entity.getArticleId(), List.of())
+					.stream()
+					.map(TagMapper.INSTANCE::toResponse)
+					.toList());
 			return detailResponse;
 		}).toList();
 	}
 
 	/**
 	 * 查询文章标签关系
-	 * @param articleEntities
+	 * @param articleIds
 	 * @return Map<Long,List<TagEntity>>
 	 **/
-	private Map<Long, List<TagEntity>> geArticleTagRelations(List<ArticleEntity> articleEntities) {
-		if (CollectionUtils.isEmpty(articleEntities)) {
+	private Map<Long, List<TagEntity>> geArticleTagRelations(Set<Long> articleIds) {
+		if (CollectionUtils.isEmpty(articleIds)) {
 			return Map.of();
 		}
-		// 所有的文章Id集合
-		Set<Long> articleIds = articleEntities.stream().map(ArticleEntity::getArticleId).collect(Collectors.toSet());
 		List<ArticleTagEntity> articleTagEntities = articleTagRepository.findAllByArticleIdIn(articleIds);
 		if (CollectionUtils.isEmpty(articleTagEntities)) {
 			return Map.of();
@@ -105,6 +107,15 @@ public class ArticleServiceImpl implements ArticleService {
 					entry -> tagEntities.stream()
 						.filter(tagEntity -> entry.getValue().contains(tagEntity.getTagId()))
 						.toList()));
+	}
+
+	private Map<Long, CategoryEntity> getCategoryRelation(Set<Long> categoryIds) {
+		if (CollectionUtils.isEmpty(categoryIds)) {
+			return Map.of();
+		}
+		return categoryRepository.findAllById(categoryIds)
+			.stream()
+			.collect(Collectors.toMap(CategoryEntity::getCategoryId, Function.identity()));
 	}
 
 	@Override
@@ -129,19 +140,26 @@ public class ArticleServiceImpl implements ArticleService {
 		if (!ArticleStatus.UNPUBLISHED.equals(articleEntity.getStatus())) {
 			throw new BusinessException("只有未发布的文章可以发布");
 		}
-		articleEntity.setStatus(ArticleStatus.PUBLISHED);
+		articleEntity.setStatus(ArticleStatus.PUBLISHED).setPublishTime(DateTimeUtil.now());
 		articleRepository.save(articleEntity);
 	}
 
 	@Override
-	public void unpublish(Long articleId) {
+	public void unPublish(Long articleId) {
 		ArticleEntity articleEntity = articleRepository.findById(articleId)
 			.orElseThrow(() -> new DataNotFoundException("文章不存在或已被删除"));
 		if (!ArticleStatus.PUBLISHED.equals(articleEntity.getStatus())) {
 			throw new BusinessException("只有已发布的文章可以下架");
 		}
-		articleEntity.setStatus(ArticleStatus.UNPUBLISHED);
+		articleEntity.setStatus(ArticleStatus.UNPUBLISHED).setUnPublishTime(DateTimeUtil.now());
 		articleRepository.save(articleEntity);
+	}
+
+	@Override
+	public PageResponse<ArticleDetailResponse> portalQuery(ArticlePortalQueryRequest request) {
+		Page<ArticleEntity> page = articleRepository.findAll(QuerySpecificationBuilder.build(request),
+				request.pageable());
+		return PageUtil.toCustomResult(page, this::entityToDetailResponse);
 	}
 
 }

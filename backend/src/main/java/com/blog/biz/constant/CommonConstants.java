@@ -11,4 +11,9 @@ public class CommonConstants {
 	 */
 	public static final String REQUEST_PREFIX_ADMIN = "/admin";
 
+	/**
+	 * 前台请求前缀
+	 */
+	public static final String REQUEST_PREFIX_PORTAL = "/portal";
+
 }
