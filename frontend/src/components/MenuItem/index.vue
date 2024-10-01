@@ -1,12 +1,12 @@
 <template>
-  <template v-for="item in data" :key="item.path">
-    <a-menu-item :key="item.path" v-if="!item.children">
+  <template v-for="item in data" :key="item.name">
+    <a-menu-item :key="item.name" v-if="!item.children">
       <template #icon v-if="item.icon">
         <svg-icon :name="item.icon" />
       </template>
       {{ item.title }}
     </a-menu-item>
-    <a-sub-menu :key="item.path" v-if="item.children">
+    <a-sub-menu :key="item.name" v-if="item.children">
       <template #icon v-if="item.icon">
         <svg-icon :name="item.icon" />
       </template>

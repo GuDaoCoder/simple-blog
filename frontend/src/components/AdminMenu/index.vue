@@ -1,5 +1,10 @@
 <template>
-  <a-menu level-indent.number="40" @menu-item-click="handleClickMenuItem">
+  <a-menu
+    level-indent.number="40"
+    @menu-item-click="handleClickMenuItem"
+    auto-open-selected
+    :selected-keys="selectedKeys"
+  >
     <menu-item :data="menuData" />
   </a-menu>
 </template>
@@ -19,6 +24,7 @@ const transformRoutes = (routes: RouteRecordRaw[]) => {
     })
     .map((route) => {
       const menuItem: Menu = {
+        name: route.name,
         path: route.path,
         title: route.meta?.title || '',
         icon: route.meta?.icon
@@ -34,9 +40,17 @@ const transformRoutes = (routes: RouteRecordRaw[]) => {
 
 const menuData = computed(() => transformRoutes(adminRoutes))
 
-const handleClickMenuItem = (path: string) => {
-  router.push({ path })
+const handleClickMenuItem = (name: string) => {
+  router.push({ name })
 }
+
+const selectedKeys = computed(() => {
+  let selectKey = router.currentRoute.value.name
+  if (selectKey === 'admin-home') {
+    return ['admin']
+  }
+  return [selectKey]
+})
 </script>
 
 <style scoped></style>
