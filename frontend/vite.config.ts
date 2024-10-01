@@ -1,11 +1,13 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import path from 'path'
 import { ConfigEnv, defineConfig, loadEnv, UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import autoImportPlugin from '@opentiny/unplugin-tiny-vue'
 import WindiCSS from 'vite-plugin-windicss'
+import AutoImport from 'unplugin-auto-import/vite'
 import { vitePluginForArco } from '@arco-plugins/vite-vue'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
@@ -16,9 +18,23 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       WindiCSS(),
       vueJsx(),
       autoImportPlugin('vite'),
+      AutoImport({
+        dts: 'src/types/auto-imports.d.ts',
+        imports: ['vue', 'vue-router', 'pinia'],
+        eslintrc: {
+          enabled: false,
+          filepath: './.eslintrc-auto-import.json',
+          globalsPropValue: true
+        }
+      }),
       // 按需引入arco
       vitePluginForArco({
         style: 'css'
+      }),
+      // svg图标
+      createSvgIconsPlugin({
+        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+        symbolId: 'icon-[dir]-[name]'
       })
     ],
     resolve: {

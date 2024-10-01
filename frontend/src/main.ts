@@ -5,6 +5,9 @@ import router from '@/router'
 import store from '@/store'
 import 'virtual:windi.css'
 
+// svg图标
+import 'virtual:svg-icons-register'
+
 // 主题
 import TinyThemeTool from '@opentiny/vue-theme/theme-tool'
 import { tinySmbTheme } from '@opentiny/vue-theme/theme'
