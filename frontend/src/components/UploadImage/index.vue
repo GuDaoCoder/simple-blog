@@ -1,17 +1,17 @@
 <template>
-  <tiny-dialog-box
+  <a-modal
     :visible="visible"
     :title="title"
     :width="limit == 1 ? '400px' : '690px'"
-    :show-close="false"
-    destroy-on-close
+    unmount-on-close
+    @cancel="emit('close')"
   >
-    <tiny-file-upload
+    <a-upload
       ref="uploadImageRef"
-      drag
+      draggable
+      with-credentials
+      image-preview
       :action="action"
-      paste-upload
-      is-hidden
       list-type="picture-card"
       :multiple="limit > 1"
       :accept="accept"
@@ -21,21 +21,22 @@
       :data="{ module }"
       @success="handleUploadSuccess"
       @error="handleUploadError"
+      @change="handleUploadChange"
     >
       <tiny-icon-fileupload class="tiny-svg-size icon-fileupload"></tiny-icon-fileupload>
-    </tiny-file-upload>
+    </a-upload>
     <template #footer>
-      <tiny-button type="primary" @click="handleUpload">上传</tiny-button>
-      <tiny-button type="info" @click="handleClear">清空</tiny-button>
-      <tiny-button type="info" @click="emit('close')">关闭</tiny-button>
+      <a-space>
+        <a-button type="primary" @click="handleUpload" :loading="uploadLoading"> 上传 </a-button>
+        <a-button type="outline" @click="handleClear">清空</a-button>
+      </a-space>
     </template>
-  </tiny-dialog-box>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
 import { iconFileupload } from '@opentiny/vue-icon'
-import { ref } from 'vue'
-import { notifyError, notifySuccess } from '@utils/notify'
+import { Notification, type FileItem } from '@arco-design/web-vue'
 
 defineProps({
   visible: {
@@ -61,7 +62,7 @@ defineProps({
   success: {
     type: Function,
     default: () => {
-      notifySuccess('上传成功')
+      Notification.success('上传成功')
     }
   }
 })
@@ -80,21 +81,30 @@ const handleClear = () => {
 }
 
 const uploadLoading = ref(false)
+
+const currentFileList = ref<FileItem[]>([])
+
 /**
  * 上传
  */
-
 const handleUpload = () => {
-  uploadLoading.value = true
-  uploadImageRef.value.submit()
+  if (currentFileList.value.length === 0) {
+    Notification.warning('请先上传文件')
+  } else {
+    uploadLoading.value = true
+    uploadImageRef.value.submit()
+  }
+}
+const handleUploadChange = (fileList: FileItem[]) => {
+  currentFileList.value = fileList
 }
 
 /**
  * 上传成功
  */
-const handleUploadSuccess = (res: ApiCommon.Result<ApiAttachment.UploadResponse>) => {
+const handleUploadSuccess = (fileItem: FileItem) => {
   uploadLoading.value = false
-  emit('upload-success', res)
+  emit('upload-success', fileItem.response)
 }
 
 /**
@@ -102,12 +112,12 @@ const handleUploadSuccess = (res: ApiCommon.Result<ApiAttachment.UploadResponse>
  */
 const handleUploadError = () => {
   uploadLoading.value = false
-  notifyError('上传失败')
+  Notification.error('上传失败')
 }
 </script>
 
 <style scoped lang="scss">
-:deep(.tiny-dialog-box__body) {
+.arco-upload-wrapper {
   display: flex;
   justify-content: center;
 }
