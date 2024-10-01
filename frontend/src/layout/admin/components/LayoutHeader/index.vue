@@ -3,28 +3,28 @@
     class="flex justify-between items-center h-full px-20px border-b border-solid border-gray-300"
   >
     <div class="flex gap-2">
-      <IconApplication />
-      <tiny-breadcrumb separator="/" :options="breadcrumboptions" />
+      <a-breadcrumb :routes="breadcrumbOptions" />
     </div>
     <ul class="flex gap-2">
       <li>
-        <tiny-user-head type="icon" round min></tiny-user-head>
+        <a-avatar
+          imageUrl="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
+        />
       </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import { iconApplication } from '@opentiny/vue-icon'
-import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
-
 const route = useRoute()
 
-const IconApplication = iconApplication()
-
-const breadcrumboptions = computed(() =>
-  route.matched.filter((o) => o.meta.title).map((o) => ({ label: o.meta.title }))
+const breadcrumbOptions = computed(() =>
+  route.matched
+    .filter((o) => o.meta.title)
+    .map((o) => ({
+      path: o.path,
+      label: o.meta.title
+    }))
 )
 </script>
 
