@@ -1,7 +1,7 @@
 <template>
-  <tiny-row flex justify="end">
+  <div class="flex justify-end gap-2">
     <slot></slot>
-  </tiny-row>
+  </div>
 </template>
 
 <script setup lang="ts"></script>

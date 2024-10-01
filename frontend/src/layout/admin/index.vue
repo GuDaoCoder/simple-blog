@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-sider>
+    <a-layout-sider class="h-screen">
       <layout-aside />
     </a-layout-sider>
     <a-layout>
