@@ -1,129 +1,77 @@
 <template>
   <content-card>
-    <tiny-form label-width="80px" label-position="right" @submit="fetchTableData">
-      <tiny-row flex>
-        <tiny-col :span="4">
-          <tiny-form-item label="文章Id">
-            <tiny-input v-model="queryForm.articleId" placeholder="请输入文章Id" />
-          </tiny-form-item>
-        </tiny-col>
-        <tiny-col :span="4">
-          <tiny-form-item label="标题">
-            <tiny-input v-model="queryForm.title" placeholder="请输入标题" />
-          </tiny-form-item>
-        </tiny-col>
-      </tiny-row>
+    <a-form :model="queryForm" @submit="handleFetchTableData">
+      <a-row :gutter="16">
+        <a-col :span="8">
+          <a-form-item label="文章标题">
+            <a-input v-model="queryForm.title" placeholder="请输入文章标题" allow-clear />
+          </a-form-item>
+        </a-col>
+      </a-row>
+
       <search-button-group>
-        <tiny-button type="primary" native-type="submit">查询</tiny-button>
-        <tiny-button type="info" @click="handleResetForm">重置</tiny-button>
+        <a-button html-type="submit" type="primary">查询</a-button>
+        <a-button type="outline" @click="handleResetForm">重置</a-button>
       </search-button-group>
-    </tiny-form>
+    </a-form>
   </content-card>
 
   <content-card class="mt-4">
-    <tiny-grid
+    <a-table
+      :columns="tableColumns"
       :data="tableData"
-      auto-resize
-      :border="true"
-      :stripe="true"
-      highlight-current-row
-      highlight-hover-row
+      :loading="tableLoading"
+      :pagination="false"
+      column-resizable
+      row-key="articleId"
+      stripe
     >
-      <tiny-grid-column type="index" width="60" />
-      <tiny-grid-column title="封面" width="120px">
-        <template #default="data">
-          <tiny-image
-            v-if="data.row.coverImageUrl"
-            class="h-100px w-100px"
-            :src="data.row.coverImageUrl"
-            :preview-src-list="[data.row.coverImageUrl]"
-            fit="fit"
-            lazy
-          ></tiny-image>
-        </template>
-      </tiny-grid-column>
-      <tiny-grid-column
-        field="articleId"
-        title="文章Id"
-        show-overflow
-        show-header-tip
-        width="100px"
-      />
-      <tiny-grid-column field="title" title="标题" show-overflow show-header-tip width="180px" />
-      <tiny-grid-column field="summary" title="摘要" show-overflow show-header-tip />
-      <tiny-grid-column title="标签" show-overflow show-header-tip>
-        <template #default="data">
-          <!-- 宽度不够时自动换行 -->
-          <div class="flex flex-wrap gap-[5px]">
-            <tiny-tag
-              v-for="tag in data.row.tags"
-              :key="tag.tagId"
-              :value="tag.tagName"
-              :color="tag.color"
-              effect="dark"
-            />
-          </div>
-        </template>
-      </tiny-grid-column>
-      <tiny-grid-column field="status" title="状态" show-overflow show-header-tip width="80px">
-        <template #default="data">
-          <tiny-tag
-            effect="dark"
-            :type="getStatusTagType(data.row)"
-            :value="dictionary.articleStatus[data.row.status]"
-        /></template>
-      </tiny-grid-column>
-      <tiny-grid-column field="top" title="是否置顶" show-overflow show-header-tip width="80px">
-        <template #default="data">
-          <tiny-switch v-model="data.row.top" show-text disabled>
-            <template #open>
-              <span>是</span>
-            </template>
-            <template #close>
-              <span>否</span>
-            </template>
-          </tiny-switch>
-        </template>
-      </tiny-grid-column>
-      <tiny-grid-column
-        field="enableComment"
-        title="是否开启评论"
-        show-overflow
-        show-header-tip
-        width="100px"
-      >
-        <template #default="data">
-          <tiny-switch v-model="data.row.enableComment" show-text disabled>
-            <template #open>
-              <span>是</span>
-            </template>
-            <template #close>
-              <span>否</span>
-            </template>
-          </tiny-switch>
-        </template>
-      </tiny-grid-column>
-      <tiny-grid-column
-        field="createTime"
-        title="创建时间"
-        show-overflow
-        show-header-tip
-        width="160px"
-      />
-      <tiny-grid-column title="操作" fixed="right" width="150px">
-        <template #default="data">
-          <tiny-action-menu
-            :options="getOperateOptions(data.row)"
-            :max-show-num="3"
-            @item-click="handleActionClick"
-          />
-        </template>
-      </tiny-grid-column>
-    </tiny-grid>
+      <template #coverImageUrl="{ record }">
+        <a-image
+          v-if="record.coverImageUrl"
+          :src="record.coverImageUrl"
+          height="100"
+          show-loader
+          width="160"
+        />
+      </template>
+      <template #tags="{ record }">
+        <div class="flex flex-wrap gap-[5px]">
+          <a-tag
+            v-for="item in record.tags"
+            :key="item.tagName"
+            :color="item.color"
+            style="margin: 4px"
+          >
+            {{ item.tagName }}
+          </a-tag>
+        </div>
+      </template>
+      <template #status="{ record }">
+        {{ record.status }}
+      </template>
+      <template #top="{ record }">
+        {{ record.top }}
+      </template>
+      <template #enableComment="{ record }">
+        {{ record.enableComment }}
+      </template>
+      <template #operations="{ record }">
+        <a-button
+          type="text"
+          size="mini"
+          v-for="action in getActions(record)"
+          :key="action.label"
+          @click="action.onClick(record)"
+        >
+          {{ action.label }}
+        </a-button>
+      </template>
+    </a-table>
 
-    <table-page
+    <Pagination
       :pagination="pagination"
-      @current-page-change="handleChangePageNumber"
+      @change="handleChangePageNumber"
       @page-size-change="handleChangePageSize"
     />
   </content-card>
@@ -139,87 +87,105 @@
 
 <script setup lang="ts">
 import SearchButtonGroup from '@components/SearchButtonGroup/index.vue'
-import TablePage from '@components/TablePage/index.vue'
-import { onMounted, ref, reactive } from 'vue'
 import {
   queryArticles,
   publishArticle,
   unpublishArticle,
   updateArticleCoverImage
 } from '@api/article'
-import { dictionary } from '@/utils/dictionary'
-import { notifySuccess, notifyWarning } from '@utils/notify'
+import { Notification, type TableColumnData } from '@arco-design/web-vue'
 
-/**
- * 默认操作栏操作项配置
- */
-const defaultActionOptions = ref([
+const tableColumns = ref<TableColumnData[]>([
   {
-    label: '设置封面',
-    action: (articleId: number) => handleUploadCoverImage(articleId)
+    title: '封面',
+    dataIndex: 'coverImageUrl',
+    slotName: 'coverImageUrl',
+    width: 180
   },
   {
-    label: '预览'
+    title: '文章标题',
+    dataIndex: 'title',
+    ellipsis: true,
+    tooltip: { position: 'left' },
+    width: 200
+  },
+  {
+    title: '摘要',
+    dataIndex: 'summary',
+    ellipsis: true,
+    width: 160,
+    tooltip: { position: 'left' }
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    slotName: 'status',
+    width: 120
+  },
+  {
+    title: '标签',
+    dataIndex: 'tags',
+    slotName: 'tags',
+    width: 200
+  },
+
+  {
+    title: '是否置顶',
+    dataIndex: 'top',
+    slotName: 'top',
+    width: 100
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    width: 180
+  },
+  {
+    title: '操作',
+    dataIndex: 'operations',
+    slotName: 'operations',
+    fixed: 'right',
+    width: 220
   }
 ])
 
-/**
- * 文章状态配置
- */
-const articleStatusConfig = reactive({
-  // 已发布
-  PUBLISHED: {
-    // 表格状态标签显示类型
-    type: 'success',
-    // 操作栏操作项配置
-    actionOptions: [
-      {
-        label: '下架',
-        action: (articleId: number) => handleUnpublishArticle(articleId)
-      }
-    ]
-  },
-  // 未发布
-  UNPUBLISHED: {
-    type: 'info',
-    actionOptions: [
-      {
-        label: '发布',
-        action: (articleId: number) => handlePublishArticle(articleId)
-      }
-    ]
-  }
-})
-
-/**
- * 获取文章状态标签显示类型
- * @param row
- */
-const getStatusTagType = (row: ApiArticle.QueryResponse) => {
-  if (row.status) {
-    return articleStatusConfig[row.status]?.type || 'info'
-  } else {
-    return 'info'
-  }
+interface Action {
+  label: string
+  show: (record: ApiArticle.QueryResponse) => boolean
+  onClick: (record: ApiArticle.QueryResponse) => void
 }
 
-/**
- * 根据每行数据内容获取对应的操作项
- * @param row
- */
-const getOperateOptions = (row: ApiArticle.QueryResponse) => {
-  let findConfig = articleStatusConfig[row.status]
-  let actionOptions = findConfig
-    ? defaultActionOptions.value.concat(findConfig.actionOptions)
-    : defaultActionOptions.value
-  return actionOptions.map((item) => ({
-    ...item,
-    row
-  }))
+const actions = ref<Action[]>([
+  {
+    label: '设置封面',
+    show: () => true,
+    onClick: (record) => {
+      handleOpenUploadCoverImageDialog(record)
+    }
+  },
+  {
+    label: '发布',
+    show: (record) => record.status === 'UNPUBLISHED',
+    onClick: (record) => {
+      handlePublishArticle(record)
+    }
+  },
+  {
+    label: '下架',
+    show: (record) => record.status === 'PUBLISHED',
+    onClick: (record) => {
+      handleUnPublishArticle(record)
+    }
+  }
+])
+
+const getActions = (record: ApiArticle.QueryResponse) => {
+  return actions.value.filter((o) => o.show(record))
 }
 
 const initQueryForm = (): Partial<ApiArticle.QueryForm> => {
   return {
+    articleId: undefined,
     title: ''
   }
 }
@@ -235,56 +201,50 @@ const pagination = ref<Component.Pagination>({
 const tableData = ref<ApiArticle.QueryResponse[]>([])
 
 onMounted(() => {
-  fetchTableData()
+  handleFetchTableData()
 })
 
-const fetchTableData = () => {
+const tableLoading = ref(false)
+
+const handleFetchTableData = () => {
   let params = {
     pageNumber: pagination.value.pageNumber,
     pageSize: pagination.value.pageSize,
     ...queryForm.value
   }
-  queryArticles(params).then((res) => {
-    tableData.value = res.items
-    pagination.value.total = res.total
-  })
+  tableLoading.value = true
+  queryArticles(params)
+    .then((res) => {
+      tableData.value = res.items
+      pagination.value.total = res.total
+    })
+    .finally(() => (tableLoading.value = false))
 }
 
 const handleResetForm = () => {
   queryForm.value = initQueryForm()
-  fetchTableData()
+  handleFetchTableData()
 }
 
 const handleChangePageNumber = (pageNumber: number) => {
   pagination.value.pageNumber = pageNumber
-  fetchTableData()
+  handleFetchTableData()
 }
 
 const handleChangePageSize = (pageSize: number) => {
   pagination.value.pageSize = pageSize
-  fetchTableData()
-}
-
-/**
- * 操作项按钮点击时间
- * @param data
- */
-const handleActionClick = (data: any) => {
-  if (data.itemData.action) {
-    data.itemData.action(data.itemData.row.articleId)
-  } else {
-    notifyWarning('操作项功能未配置')
-  }
+  handleFetchTableData()
 }
 
 const uploadImageVisible = ref(false)
-const choosedArticleId = ref<number>(0)
+const selectedArticleId = ref<number>(0)
+
 /**
- * 上传封面
+ * 打开上传封面弹窗
  * @param articleId
  */
-const handleUploadCoverImage = (articleId: number) => {
-  choosedArticleId.value = articleId
+const handleOpenUploadCoverImageDialog = (record: ApiArticle.QueryResponse) => {
+  selectedArticleId.value = record.articleId
   uploadImageVisible.value = true
 }
 
@@ -293,13 +253,13 @@ const handleUploadCoverImage = (articleId: number) => {
  * @param data
  */
 const handleUploadCoverImageSuccess = (data: ApiCommon.Result<ApiAttachment.UploadResponse>) => {
-  updateArticleCoverImage(choosedArticleId.value, data.data.url)
+  updateArticleCoverImage(selectedArticleId.value, data.data.url)
     .then(() => {
-      notifySuccess('封面更新成功')
-      fetchTableData()
+      Notification.success('封面更新成功')
+      handleFetchTableData()
     })
     .finally(() => {
-      choosedArticleId.value = 0
+      selectedArticleId.value = 0
       uploadImageVisible.value = false
     })
 }
@@ -313,12 +273,12 @@ const handleUploadImageClose = () => {
 
 /**
  * 发布文章
- * @param articleId
+ * @param record
  */
-const handlePublishArticle = (articleId: number) => {
-  publishArticle(articleId).then(() => {
-    notifySuccess('发布成功')
-    fetchTableData()
+const handlePublishArticle = (record: ApiArticle.QueryResponse) => {
+  publishArticle(record.articleId).then(() => {
+    Notification.success('发布成功')
+    handleFetchTableData()
   })
 }
 
@@ -326,12 +286,16 @@ const handlePublishArticle = (articleId: number) => {
  * 下架文章
  * @param articleId
  */
-const handleUnpublishArticle = (articleId: number) => {
-  unpublishArticle(articleId).then(() => {
-    notifySuccess('下架成功')
-    fetchTableData()
+const handleUnPublishArticle = (record: ApiArticle.QueryResponse) => {
+  unpublishArticle(record.articleId).then(() => {
+    Notification.success('下架成功')
+    handleFetchTableData()
   })
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.arco-btn-size-mini) {
+  padding: 0 2px;
+}
+</style>
