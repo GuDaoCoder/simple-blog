@@ -3,9 +3,9 @@ import path from 'path'
 import { ConfigEnv, defineConfig, loadEnv, UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import autoImportPlugin from '@opentiny/unplugin-tiny-vue'
 import WindiCSS from 'vite-plugin-windicss'
 import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
 import { vitePluginForArco } from '@arco-plugins/vite-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
@@ -17,7 +17,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       vue(),
       WindiCSS(),
       vueJsx(),
-      autoImportPlugin('vite'),
+      // 未vue、vue-router、pinia按需自动引入
       AutoImport({
         dts: 'src/types/auto-imports.d.ts',
         imports: ['vue', 'vue-router', 'pinia'],
@@ -26,6 +26,10 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           filepath: './.eslintrc-auto-import.json',
           globalsPropValue: true
         }
+      }),
+      // 自动引入自定义组件
+      Components({
+        dirs: ['src/components']
       }),
       // 按需引入arco
       vitePluginForArco({
