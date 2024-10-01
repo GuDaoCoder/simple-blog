@@ -1,13 +1,15 @@
 <template>
-  <tiny-container pattern="classic">
-    <layout-main />
-    <template #header>
-      <layout-header class="h-60px shadow-md" />
-    </template>
-    <template #footer>
+  <a-layout>
+    <a-layout-header>
+      <layout-header class="h-15 shadow-md" />
+    </a-layout-header>
+    <a-layout-content class="bg-gray-100">
+      <layout-main />
+    </a-layout-content>
+    <a-layout-footer>
       <layout-footer />
-    </template>
-  </tiny-container>
+    </a-layout-footer>
+  </a-layout>
 </template>
 
 <script setup lang="ts">
@@ -16,8 +18,4 @@ import LayoutMain from './components/LayoutMain/index.vue'
 import LayoutFooter from './components/LayoutFooter/index.vue'
 </script>
 
-<style scoped lang="scss">
-:deep(.tiny-container__main) {
-  background-color: #f1f2f5;
-}
-</style>
+<style scoped lang="scss"></style>
