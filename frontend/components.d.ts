@@ -7,12 +7,15 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AdminMenu: typeof import('./src/components/AdminMenu/index.vue')['default']
     ArticleList: typeof import('./src/components/ArticleList/index.vue')['default']
     ArticleListItem: typeof import('./src/components/ArticleListItem/index.vue')['default']
     ContentCard: typeof import('./src/components/ContentCard/index.vue')['default']
+    MenuItem: typeof import('./src/components/MenuItem/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchButtonGroup: typeof import('./src/components/SearchButtonGroup/index.vue')['default']
+    SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     TablePage: typeof import('./src/components/TablePage/index.vue')['default']
     TinyActionMenu: typeof import('@opentiny/vue')['ActionMenu']
     TinyBreadcrumb: typeof import('@opentiny/vue')['Breadcrumb']
@@ -41,7 +44,7 @@ declare module 'vue' {
     TinyTabItem: (typeof import('@opentiny/vue'))['TabItem']
     TinyTabs: (typeof import('@opentiny/vue'))['Tabs']
     TinyTag: typeof import('@opentiny/vue')['Tag']
-    TinyTreeMenu: typeof import('@opentiny/vue')['TreeMenu']
+    TinyTreeMenu: (typeof import('@opentiny/vue'))['TreeMenu']
     TinyUserHead: typeof import('@opentiny/vue')['UserHead']
     UploadImage: typeof import('./src/components/UploadImage/index.vue')['default']
   }

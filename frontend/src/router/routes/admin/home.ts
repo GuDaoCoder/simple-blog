@@ -1,15 +1,14 @@
-import type { RouteRaw } from '../type'
-import { IconPublicHome } from '@opentiny/vue-icon'
+import type { AppRouteRecordRaw } from '../types'
 
-const HOME: RouteRaw = {
+const HOME: AppRouteRecordRaw = {
   path: '/admin',
   name: 'admin',
   redirect: '/admin/home',
   component: () => import('@layout/admin/index.vue'),
   meta: {
-    order: 1,
+    order: 0,
     title: '主页',
-    icon: IconPublicHome()
+    hideChildrenInMenu: true
   },
   children: [
     {

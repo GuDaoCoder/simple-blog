@@ -7,19 +7,11 @@ export type Component<T = any> =
   | (() => Promise<typeof import('*.vue')>)
   | (() => Promise<T>)
 
-declare module 'vue-router' {
-  export interface RouteMeta {
-    order?: number
-    title: string
-    icon?: Component
-  }
-}
-
-export interface RouteRaw {
+export interface AppRouteRecordRaw {
   path: string
-  component: Component | string
-  name: string
-  redirect?: string
-  children?: Array<RouteRaw>
+  name?: string | symbol
   meta?: RouteMeta
+  redirect?: string
+  component: Component | string
+  children?: AppRouteRecordRaw[]
 }

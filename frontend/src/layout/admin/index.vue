@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <tiny-container pattern="fashion">
-      <layout-main />
-      <template #header>
+  <a-layout>
+    <a-layout-sider class="h-screen">
+      <layout-aside />
+    </a-layout-sider>
+    <a-layout>
+      <a-layout-header class="h-60px">
         <layout-header />
-      </template>
-      <template #aside>
-        <layout-aside />
-      </template>
-      <!-- <template #footer>
-        <layout-footer />
-      </template> -->
-    </tiny-container>
-  </div>
+      </a-layout-header>
+      <a-layout>
+        <a-layout-content>
+          <layout-main />
+        </a-layout-content>
+        <a-layout-footer>Footer</a-layout-footer>
+      </a-layout>
+    </a-layout>
+  </a-layout>
 </template>
 
 <script setup lang="ts">

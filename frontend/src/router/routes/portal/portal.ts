@@ -1,6 +1,6 @@
-import type { RouteRaw } from '../type'
+import type { AppRouteRecordRaw } from '../types'
 
-const PORTAL: RouteRaw = {
+const PORTAL: AppRouteRecordRaw = {
   path: '/',
   name: 'portal',
   component: () => import('@layout/portal/index.vue'),

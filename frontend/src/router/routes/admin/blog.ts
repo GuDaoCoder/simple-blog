@@ -1,15 +1,13 @@
-import type { RouteRaw } from '../type'
-import { IconDocument } from '@opentiny/vue-icon'
+import type { AppRouteRecordRaw } from '../types'
 
-const BLOG: RouteRaw = {
+const BLOG: AppRouteRecordRaw = {
   path: '/blog',
   name: 'blog',
   redirect: '/admin/article',
   component: () => import('@layout/admin/index.vue'),
   meta: {
-    order: 2,
-    title: '博客管理',
-    icon: IconDocument()
+    order: 1,
+    title: '博客管理'
   },
   children: [
     {
