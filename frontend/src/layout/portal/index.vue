@@ -1,12 +1,14 @@
 <template>
   <a-layout id="main">
-    <a-layout-header>
-      <layout-header class="h-15 shadow-md" />
-    </a-layout-header>
+    <a-affix :offsetTop="0">
+      <a-layout-header class="bg-white">
+        <layout-header class="h-15 shadow-md" />
+      </a-layout-header>
+    </a-affix>
     <a-layout-content class="bg-gray-100">
       <layout-main />
     </a-layout-content>
-    <a-layout-footer>
+    <a-layout-footer class="bg-white w-full">
       <layout-footer />
     </a-layout-footer>
   </a-layout>

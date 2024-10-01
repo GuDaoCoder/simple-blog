@@ -33,6 +33,14 @@ export const publishArticle = (articleId: number) => {
  * @param articleId
  * @returns
  */
-export const unpublishArticle = (articleId: number) => {
-  return patch(`/admin/articles/${articleId}/unpublish`)
+export const unPublishArticle = (articleId: number) => {
+  return patch(`/admin/articles/${articleId}/unPublish`)
+}
+
+/**
+ * 获取文章列表
+ * @param params
+ */
+export const portalQueryArticles = (params: ApiArticle.PortalQueryRequest) => {
+  return get<ApiCommon.PageResponse<ApiArticle.QueryResponse>>('/portal/articles', params)
 }

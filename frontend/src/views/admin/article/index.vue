@@ -90,7 +90,7 @@ import SearchButtonGroup from '@components/SearchButtonGroup/index.vue'
 import {
   queryArticles,
   publishArticle,
-  unpublishArticle,
+  unPublishArticle,
   updateArticleCoverImage
 } from '@api/article'
 import { Notification, type TableColumnData } from '@arco-design/web-vue'
@@ -287,7 +287,7 @@ const handlePublishArticle = (record: ApiArticle.QueryResponse) => {
  * @param articleId
  */
 const handleUnPublishArticle = (record: ApiArticle.QueryResponse) => {
-  unpublishArticle(record.articleId).then(() => {
+  unPublishArticle(record.articleId).then(() => {
     Notification.success('下架成功')
     handleFetchTableData()
   })

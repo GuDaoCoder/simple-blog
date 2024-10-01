@@ -175,6 +175,19 @@ declare namespace ApiArticle {
 
   type QueryRequest = ApiCommon.PageRequest & Partial<QueryForm>
 
+  interface PortalQueryForm {
+    /**
+     * 标题
+     */
+    title: string
+    /**
+     * 所属分类Id
+     */
+    categoryId: number
+  }
+
+  type PortalQueryRequest = ApiCommon.PageRequest & Partial<PortalQueryForm>
+
   interface QueryResponse {
     /**
      * 文章Id
@@ -201,9 +214,9 @@ declare namespace ApiArticle {
      */
     source: 'GIT_SYNC'
     /**
-     * 所属分类Id
+     * 所属分类
      */
-    categoryId: number
+    category: ApiCategory.QueryResponse
     /**
      * 是否置顶
      */
@@ -219,7 +232,7 @@ declare namespace ApiArticle {
     /**
      * 下架时间
      */
-    unpublishTime: string
+    unPublishTime: string
     /**
      * 文件hash值
      */

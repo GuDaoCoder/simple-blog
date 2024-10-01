@@ -1,40 +1,63 @@
 <template>
   <div class="relative h-50 w-full bg-[#fff] p-2 flex gap-2">
     <div
-      class="absolute top-6 left-0 transform bg-lime-500 text-white text-sm px-1 py-1 font-bold shadow-md"
+      class="absolute top-4 left-[-6px] bg-[#2E52FD] text-white text-xs p-1 font-bold shadow-md z-10 cursor-pointer"
     >
-      Springboot
+      {{ data.category.categoryName }}
     </div>
     <!-- 封面 -->
-    <div class="w-70 bg-red-300"></div>
+    <div class="w-70">
+      <a-image
+        class="cursor-pointer"
+        width="280"
+        height="184"
+        v-if="data.coverImageUrl"
+        :src="data.coverImageUrl"
+        show-loader
+        :preview="false"
+      />
+    </div>
     <!--文章内容 -->
-    <div class="flex flex-1 flex-col justify-between">
-      <h2 class="font-bold overflow-hidden text-ellipsis break-words line-clamp-2">
-        使用 Squid 搭建 Http 代理服务器隐藏 IP使用 Squid 搭建 Http 代理服务器隐藏 IP 使用 Squid 搭建
-        Http 代理服务器隐藏 IP使用 Squid 搭建 Http 代理服务器隐藏 IP
+    <div class="relative flex-1">
+      <h2 class="font-bold overflow-hidden text-ellipsis break-words line-clamp-1 cursor-pointer">
+        {{ data.title }}
       </h2>
       <div
-        class="text-sm text-gray-500 indent-2em overflow-hidden text-ellipsis break-words line-clamp-4"
+        class="mt-4 text-sm text-gray-500 indent-2em overflow-hidden text-ellipsis break-words line-clamp-4 cursor-pointer"
       >
-        小玖研究副业好久了，也做过很多副业，第一次觉得一个副业这么简单！
-        以前，写小说（差文笔）、小说推文（被限流没流量）、抖音（不会做视频）、开网店（一件代发有坑）。
-        现在，做网盘拉新，不用投入，白嫖网盘会员。白嫖网盘会员。白嫖网盘会员。
+        {{ data.summary }}
       </div>
-      <div class="mt-4 flex justify-between items-center">
-        <div class="text-xs text-gray-500 space-x-2">
-          <span class="bg-gray-100 px-2 py-1 rounded">标签1</span>
-          <span class="bg-gray-100 px-2 py-1 rounded">标签2</span>
-        </div>
+      <div class="absolute w-full bottom-0 flex justify-between items-center">
+        <a-space>
+          <a-tag
+            class="cursor-pointer"
+            size="small"
+            v-for="tag in data.tags"
+            :key="tag.tagId"
+            :color="tag.color"
+          >
+            {{ tag.tagName }}
+          </a-tag>
+        </a-space>
 
-        <div class="flex items-center space-x-4 text-xs text-gray-400">
-          <span>2024-09-28</span>
-          <span>👍 120</span>
-        </div>
+        <a-space class="text-xs text-gray-400">
+          <span>{{ formatDate(data.publishTime, 'YYYY/MM/DD') }}</span>
+        </a-space>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { PropType } from 'vue'
+import { formatDate } from '@/utils/date'
+
+defineProps({
+  data: {
+    type: Object as PropType<ApiArticle.QueryResponse>,
+    required: true
+  }
+})
+</script>
 
 <style scoped lang="scss"></style>
