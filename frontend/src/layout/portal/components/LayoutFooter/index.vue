@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center leading-[60px]">simple-blog</div>
+  <div class="text-center leading-15">simple-blog</div>
 </template>
 
 <script setup lang="ts"></script>
