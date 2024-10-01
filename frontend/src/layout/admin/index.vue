@@ -17,6 +17,7 @@
       </a-layout>
     </a-layout>
   </a-layout>
+  <a-back-top style="bottom: 80px; right: 10px" />
 </template>
 
 <script setup lang="ts">

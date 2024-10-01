@@ -1,5 +1,5 @@
 <template>
-  <a-layout>
+  <a-layout id="main">
     <a-layout-header>
       <layout-header class="h-15 shadow-md" />
     </a-layout-header>
@@ -10,6 +10,8 @@
       <layout-footer />
     </a-layout-footer>
   </a-layout>
+
+  <a-back-top style="bottom: 80px; right: 40px" />
 </template>
 
 <script setup lang="ts">
