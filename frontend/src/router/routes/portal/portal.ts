@@ -10,6 +10,11 @@ const PORTAL: AppRouteRecordRaw = {
       name: 'home',
       path: '/home',
       component: () => import('@/views/portal/home/index.vue')
+    },
+    {
+      name: 'article',
+      path: '/article/:articleId',
+      component: () => import('@/views/portal/article/index.vue')
     }
   ]
 }

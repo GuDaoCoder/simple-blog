@@ -15,15 +15,20 @@
         :src="data.coverImageUrl"
         show-loader
         :preview="false"
+        @click="toArticleDetail(data)"
       />
     </div>
     <!--文章内容 -->
     <div class="relative flex-1">
-      <h2 class="font-bold overflow-hidden text-ellipsis break-words line-clamp-1 cursor-pointer">
+      <h2
+        class="font-bold overflow-hidden text-ellipsis break-words line-clamp-1 cursor-pointer"
+        @click="toArticleDetail(data)"
+      >
         {{ data.title }}
       </h2>
       <div
         class="mt-4 text-sm text-gray-500 indent-2em overflow-hidden text-ellipsis break-words line-clamp-4 cursor-pointer"
+        @click="toArticleDetail(data)"
       >
         {{ data.summary }}
       </div>
@@ -51,6 +56,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { formatDate } from '@/utils/date'
+import { useRouter } from 'vue-router'
 
 defineProps({
   data: {
@@ -58,6 +64,12 @@ defineProps({
     required: true
   }
 })
+
+const router = useRouter()
+
+const toArticleDetail = (data: ApiArticle.QueryResponse) => {
+  router.push(`/article/${data.articleId}`)
+}
 </script>
 
 <style scoped lang="scss"></style>

@@ -6,7 +6,9 @@
     <div class="flex-1 ml-4">
       <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in" appear>
-          <component :is="Component" :key="route.path" />
+          <div :key="route.path">
+            <component :is="Component" />
+          </div>
         </transition>
       </router-view>
     </div>
