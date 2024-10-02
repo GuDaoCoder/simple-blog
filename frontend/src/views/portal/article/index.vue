@@ -11,7 +11,7 @@
 
     <a-divider />
 
-    <v-md-preview :text="articleContent"></v-md-preview>
+    <v-md-preview :text="articleContent" @copy-code-success="handleCopyCodeSuccess"></v-md-preview>
 
     <a-divider />
 
@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import { portalGetArticle, portalArticleContent } from '@/api/article'
 import { formatDate } from '@/utils/date'
+import { Notification } from '@arco-design/web-vue'
 
 const route = useRoute()
 
@@ -64,6 +65,10 @@ const getPortalArticleContent = (articleId: number) => {
   portalArticleContent(articleId).then((res) => {
     articleContent.value = res
   })
+}
+
+const handleCopyCodeSuccess = () => {
+  Notification.success('复制成功')
 }
 </script>
 <style scoped></style>
