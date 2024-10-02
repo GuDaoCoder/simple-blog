@@ -44,3 +44,19 @@ export const unPublishArticle = (articleId: number) => {
 export const portalQueryArticles = (params: ApiArticle.PortalQueryRequest) => {
   return get<ApiCommon.PageResponse<ApiArticle.QueryResponse>>('/portal/articles', params)
 }
+
+/**
+ * 查询文章详情
+ * @param articleId
+ */
+export const portalGetArticle = (articleId: number) => {
+  return get<ApiArticle.QueryResponse>(`/portal/articles/${articleId}`)
+}
+
+/**
+ * 查询文章内容
+ * @param articleId
+ */
+export const portalArticleContent = (articleId: number) => {
+  return get<string>(`/portal/articles/${articleId}/content`)
+}
