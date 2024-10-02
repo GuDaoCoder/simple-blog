@@ -162,4 +162,11 @@ public class ArticleServiceImpl implements ArticleService {
 		return PageUtil.toCustomResult(page, this::entityToDetailResponse);
 	}
 
+	@Override
+	public ArticleDetailResponse portalGetDetail(Long articleId) {
+		ArticleEntity articleEntity = articleRepository.findById(articleId)
+			.orElseThrow(() -> new DataNotFoundException("文章不存在或已被删除"));
+		return entityToDetailResponse(List.of(articleEntity)).stream().findFirst().get();
+	}
+
 }

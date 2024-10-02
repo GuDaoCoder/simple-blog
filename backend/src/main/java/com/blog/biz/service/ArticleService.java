@@ -49,10 +49,17 @@ public interface ArticleService {
 	void unPublish(Long articleId);
 
 	/**
-	 * 门户查询文章
+	 * 门户查询文章列表
 	 * @param request
 	 * @return PageResponse<ArticleDetailResponse>
 	 **/
 	PageResponse<ArticleDetailResponse> portalQuery(ArticlePortalQueryRequest request);
+
+	/**
+	 * 门户查询文章详情
+	 * @param articleId
+	 * @return ArticleDetailResponse
+	 **/
+	ArticleDetailResponse portalGetDetail(Long articleId);
 
 }
