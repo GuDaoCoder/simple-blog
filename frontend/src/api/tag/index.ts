@@ -8,3 +8,7 @@ import { get } from '../api'
 export const queryTags = (params: ApiTag.QueryRequest) => {
   return get<ApiCommon.PageResponse<ApiTag.QueryResponse>>('/admin/tags', params)
 }
+
+export const portalQueryAllTags = () => {
+  return get<ApiTag.QueryResponse[]>('/portal/tags')
+}

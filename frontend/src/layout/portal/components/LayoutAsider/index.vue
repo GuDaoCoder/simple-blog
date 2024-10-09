@@ -1,7 +1,9 @@
 <template>
-  <div class="py-4">
+  <a-space direction="vertical" class="w-full">
     <user-card />
-  </div>
+    <category-card />
+    <tag-card />
+  </a-space>
 </template>
 
 <script setup lang="ts"></script>
