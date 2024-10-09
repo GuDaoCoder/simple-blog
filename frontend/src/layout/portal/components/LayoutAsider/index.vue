@@ -1,9 +1,11 @@
 <template>
-  <a-space direction="vertical" class="w-full">
-    <user-card />
-    <category-card />
-    <tag-card />
-  </a-space>
+  <a-affix :offsetTop="80">
+    <a-space direction="vertical" class="w-full">
+      <user-card />
+      <category-card />
+      <tag-card />
+    </a-space>
+  </a-affix>
 </template>
 
 <script setup lang="ts"></script>
