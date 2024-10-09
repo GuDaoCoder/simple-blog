@@ -18,4 +18,11 @@ public interface CategoryService {
 	 **/
 	List<CategoryNodeResponse> tree(CategoryQueryRequest request);
 
+	/**
+	 * 门户查询分类树结构
+	 * @param
+	 * @return List<CategoryNodeResponse>
+	 **/
+	List<CategoryNodeResponse> portalTree();
+
 }

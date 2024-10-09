@@ -32,7 +32,20 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<CategoryNodeResponse> tree(CategoryQueryRequest request) {
-		List<CategoryEntity> categoryEntities = categoryRepository.findAll(QuerySpecificationBuilder.build(request));
+		return buildCategoryTree(categoryRepository.findAll(QuerySpecificationBuilder.build(request)));
+	}
+
+	@Override
+	public List<CategoryNodeResponse> portalTree() {
+		return buildCategoryTree(categoryRepository.findAll());
+	}
+
+	/**
+	 * 构建分类树API返回
+	 * @param categoryEntities
+	 * @return List<CategoryNodeResponse>
+	 **/
+	private List<CategoryNodeResponse> buildCategoryTree(List<CategoryEntity> categoryEntities) {
 		if (CollectionUtils.isEmpty(categoryEntities)) {
 			return new ArrayList<>();
 		}

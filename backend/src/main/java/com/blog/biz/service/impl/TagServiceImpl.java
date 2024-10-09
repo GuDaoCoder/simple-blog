@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Gudao
  * @since 2024/8/5
@@ -27,6 +29,11 @@ public class TagServiceImpl implements TagService {
 	public PageResponse<TagResponse> query(TagQueryRequest request) {
 		Page<TagEntity> page = tagRepository.findAll(QuerySpecificationBuilder.build(request), request.pageable());
 		return PageUtil.toResult(page, TagMapper.INSTANCE::toResponse);
+	}
+
+	@Override
+	public List<TagResponse> queryAll() {
+		return tagRepository.findAll().stream().map(TagMapper.INSTANCE::toResponse).toList();
 	}
 
 }
