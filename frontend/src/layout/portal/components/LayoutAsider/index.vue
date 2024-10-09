@@ -1,5 +1,7 @@
 <template>
-  <div class="w-200px"></div>
+  <div class="py-4">
+    <user-card />
+  </div>
 </template>
 
 <script setup lang="ts"></script>

@@ -1,6 +1,6 @@
 <template>
   <div class="flex py-4 mx-auto w-1200px">
-    <div class="w-200px space-y-5">
+    <div class="w-240px space-y-5">
       <layout-asider />
     </div>
     <div class="flex-1 ml-4" style="min-width: 0">
