@@ -1,5 +1,5 @@
 <template>
-  <a-affix :offsetTop="80">
+  <a-affix :offsetTop="70">
     <a-space direction="vertical" class="w-full">
       <user-card />
       <category-card />

@@ -1,10 +1,10 @@
 <template>
   <div class="w-full h-full bg-white">
-    <h1
+    <p
       class="text-[24px] text-[#333] font-bold text-center pt-[40px] break-words shadow-[0_1px_2px_rgba(0,0,0,0.25)]"
     >
       {{ article.title }}
-    </h1>
+    </p>
     <a-space class="text-[16px] px-10 py-5 text-[#909399]">
       <span>{{ formatDate(article.publishTime, 'YYYY/MM/DD') }}</span>
     </a-space>
