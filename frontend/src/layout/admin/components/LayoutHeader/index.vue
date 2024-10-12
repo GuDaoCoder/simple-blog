@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-between items-center h-full px-20px border-b border-solid border-gray-300"
+    class="flex justify-between bg-white items-center h-full px-20px border-b border-solid border-gray-300"
   >
     <div class="flex gap-2">
       <a-breadcrumb :routes="breadcrumbOptions" />
@@ -16,16 +16,23 @@
 </template>
 
 <script setup lang="ts">
+import type { BreadcrumbRoute } from '@arco-design/web-vue'
+import type { ComputedRef } from 'vue'
+
 const route = useRoute()
 
-const breadcrumbOptions = computed(() =>
+const breadcrumbOptions: ComputedRef<BreadcrumbRoute[]> = computed(() => {
+  let array: BreadcrumbRoute[] = []
   route.matched
     .filter((o) => o.meta.title)
-    .map((o) => ({
-      path: o.path,
-      label: o.meta.title
-    }))
-)
+    .forEach((o) =>
+      array.push({
+        path: o.path,
+        label: o.meta.title || ''
+      })
+    )
+  return array
+})
 </script>
 
 <style scoped lang="scss"></style>

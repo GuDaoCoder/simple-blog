@@ -11,9 +11,6 @@
         <a-layout-content>
           <layout-main />
         </a-layout-content>
-        <a-layout-footer class="h-15">
-          <layout-footer />
-        </a-layout-footer>
       </a-layout>
     </a-layout>
   </a-layout>
