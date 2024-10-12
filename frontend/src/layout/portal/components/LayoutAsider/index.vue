@@ -21,7 +21,7 @@ const showAnchorCard = computed(() => {
 <style scoped lang="scss">
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: transform 1s ease;
+  transition: transform 0.5s ease;
 }
 
 .slide-up-enter,
@@ -30,7 +30,7 @@ const showAnchorCard = computed(() => {
 }
 
 .slide-up-enter-active {
-  animation: slideUp 1s ease forwards;
+  animation: slideUp 0.5s ease forwards;
 }
 
 @keyframes slideUp {
