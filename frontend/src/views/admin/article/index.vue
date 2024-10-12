@@ -157,6 +157,13 @@ interface Action {
 
 const actions = ref<Action[]>([
   {
+    label: '预览',
+    show: () => true,
+    onClick: (record) => {
+      handlePreviewArticle(record)
+    }
+  },
+  {
     label: '设置封面',
     show: () => true,
     onClick: (record) => {
@@ -238,6 +245,10 @@ const handleChangePageSize = (pageSize: number) => {
 
 const uploadImageVisible = ref(false)
 const selectedArticleId = ref<number>(0)
+
+const handlePreviewArticle = (record: ApiArticle.QueryResponse) => {
+  window.open(`/article/${record.articleId}`)
+}
 
 /**
  * 打开上传封面弹窗
