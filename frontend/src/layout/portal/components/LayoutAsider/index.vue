@@ -1,20 +1,30 @@
 <template>
-  <a-affix :offsetTop="70">
-    <a-space direction="vertical" class="w-full">
-      <user-card />
-      <transition name="slide-up">
-        <anchor-card v-if="showAnchorCard" />
-      </transition>
-      <category-card />
-      <tag-card />
-    </a-space>
-  </a-affix>
+  <a-space direction="vertical" class="w-full">
+    <user-card />
+    <transition name="slide-up">
+      <a-affix :offsetTop="70">
+        <div v-if="showArticleRelationCard">
+          <anchor-card />
+        </div>
+      </a-affix>
+    </transition>
+    <transition name="slide-up">
+      <div v-if="showHomeCard">
+        <category-card />
+        <tag-card />
+      </div>
+    </transition>
+  </a-space>
 </template>
 
 <script setup lang="ts">
 const route = useRoute()
-const showAnchorCard = computed(() => {
+const showArticleRelationCard = computed(() => {
   return route.name === 'article'
+})
+
+const showHomeCard = computed(() => {
+  return route.name === 'home'
 })
 </script>
 

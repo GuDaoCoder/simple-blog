@@ -20,6 +20,7 @@ declare module 'vue' {
     SearchButtonGroup: typeof import('./src/components/SearchButtonGroup/index.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     TagCard: typeof import('./src/components/TagCard/index.vue')['default']
+    TagCloudCard: typeof import('./src/components/TagCloudCard/index.vue')['default']
     UploadImage: typeof import('./src/components/UploadImage/index.vue')['default']
     UserCard: typeof import('./src/components/UserCard/index.vue')['default']
   }
