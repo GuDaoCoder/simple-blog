@@ -1,6 +1,10 @@
 <template>
   <div class="flex justify-between items-center px-4">
-    <div class="w-[50%]"></div>
+    <div class="w-[50%]">
+      <a-space>
+        <blog-logo link="/" />
+      </a-space>
+    </div>
     <ul class="flex">
       <a-input-search placeholder="请输入关键字" search-button />
     </ul>

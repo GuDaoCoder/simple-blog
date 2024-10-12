@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-60px flex items-center justify-center">
-    <h2>simple-blog</h2>
+    <blog-logo link="/admin" />
   </div>
   <admin-menu />
 </template>

@@ -11,6 +11,7 @@ declare module 'vue' {
     AnchorCard: typeof import('./src/components/AnchorCard/index.vue')['default']
     ArticleList: typeof import('./src/components/ArticleList/index.vue')['default']
     ArticleListItem: typeof import('./src/components/ArticleListItem/index.vue')['default']
+    BlogLogo: typeof import('./src/components/BlogLogo/index.vue')['default']
     CategoryCard: typeof import('./src/components/CategoryCard/index.vue')['default']
     ContentCard: typeof import('./src/components/ContentCard/index.vue')['default']
     MenuItem: typeof import('./src/components/MenuItem/index.vue')['default']
