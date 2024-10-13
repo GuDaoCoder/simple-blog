@@ -3,7 +3,9 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig
 } from 'axios'
-import { notifyError } from '@utils/notify'
+import { Notification } from '@arco-design/web-vue'
+import { getToken } from '@/utils/auth'
+import router from '@/router'
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: '/api',
@@ -13,6 +15,10 @@ const axiosInstance: AxiosInstance = axios.create({
 // 请求拦截器
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    const token = getToken()
+    if (token) {
+      config.headers['Authorization'] = token
+    }
     return config
   },
   (error) => {
@@ -29,27 +35,28 @@ axiosInstance.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 500:
-          notifyError('服务器异常')
+          Notification.error('服务器异常')
           break
         case 404:
-          notifyError('资源不存在或已被删除')
+          Notification.error('资源不存在或已被删除')
           break
         case 403:
-          notifyError('禁止访问')
+          Notification.error('禁止访问')
           break
         case 401:
-          notifyError('未登录或者登陆信息已失效')
+          Notification.error('未登录或者登陆信息已失效')
+          router.push({ name: 'admin-login' })
           break
         case 400:
-          notifyError(error.response.data.errorMsg || 'Error')
+          Notification.error(error.response.data.errorMsg || 'Error')
           break
         default:
-          notifyError('未知异常')
+          Notification.error('未知异常')
           break
       }
     } else {
       if (error.message) {
-        notifyError(error.message)
+        Notification.error(error.message)
       }
     }
     return Promise.reject(error)

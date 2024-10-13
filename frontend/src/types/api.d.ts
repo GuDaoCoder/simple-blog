@@ -55,6 +55,28 @@ declare namespace ApiCommon {
   }
 }
 
+declare namespace ApiAuth {
+  interface LoginForm {
+    /**
+     * 用户名
+     */
+    username: string
+    /**
+     * 密码
+     */
+    password: string
+  }
+
+  type LoginRequest = Partial<LoginForm>
+
+  interface LoginResponse {
+    /**
+     * token
+     */
+    token: string
+  }
+}
+
 /**
  * 标签
  */

@@ -1,5 +1,5 @@
 <template>
-  <img :src="logo" alt="" class="logo" @click="handleClickLogo" />
+  <img :src="logo" alt="" class="logo" @click="handleClickLogo" :style="`height:${height}px`" />
 </template>
 
 <script setup lang="ts">
@@ -9,6 +9,10 @@ const props = defineProps({
   link: {
     type: String,
     default: ''
+  },
+  height: {
+    type: Number,
+    default: 40
   }
 })
 
@@ -22,7 +26,6 @@ const handleClickLogo = () => {
 
 <style scoped lang="scss">
 .logo {
-  height: 40px;
   cursor: pointer;
 }
 </style>
