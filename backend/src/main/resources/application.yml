@@ -108,6 +108,8 @@ security:
   # 白名单
   white-urls:
     - /admin/login
+    - /admin/attachments/download/**
+    - /portal/**
     - /swagger-ui.html
     - /doc.html
     - /v3/api-docs/**
